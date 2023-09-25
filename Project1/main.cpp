@@ -1,3 +1,10 @@
+// Project 1a
+// 
+// Main program for Project 1a
+//
+// Sean Vumbaco and Drew Balfour
+//
+
 #include <iostream>
 #include <vector>
 #include <string>

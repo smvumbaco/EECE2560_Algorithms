@@ -1,3 +1,12 @@
+// Project 1a
+// 
+// Contains 2 Code constructors, and declarations for get_code_length, 
+//get_digit_range, in_code, in_vector, checkCorrect, checkIncorrect,
+// and operator<<
+//
+// Sean Vumbaco and Drew Balfour
+//
+
 #include <iostream>
 #include <vector>
 #include <random>
@@ -65,12 +74,12 @@ int Code::in_vector(int num, vector<int> int_vector) const {
 // Returns the number of correct digits in the correct location
 int Code::checkCorrect(Code &guess) const {
     int cor = 0;
-    for (int i = 0; i < code_length; i++) {
-        if (code[i] == guess.code[i]) {
-            cor++;
+    for (int i = 0; i < code_length; i++) {             // iterate through all elements of code
+        if (code[i] == guess.code[i]) {                 // compares elements of code vector to given guess code vector
+            cor++;                                      // add value to # of correct digits in correct locations
         }
     }
-    return cor;
+    return cor;                                         // return # of correct digits in correct locations
 }
 
 // Returns the number of correct digits in the incorret location

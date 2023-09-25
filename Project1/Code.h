@@ -1,3 +1,9 @@
+// Project 1a
+// 
+// class Code declaration for Mastermind.
+// Sean Vumbaco and Drew Balfour
+//
+
 #ifndef CODE_H
 #define CODE_H
 
