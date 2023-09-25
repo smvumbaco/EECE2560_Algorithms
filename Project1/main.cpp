@@ -7,6 +7,8 @@ using namespace std;
 #include "Code.h"
 #include "Code.cpp"
 
+// Part 1 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 const int guess1_array[5] = {5, 0, 3, 2, 6};
 const int guess2_array[5] = {2, 1, 2, 2, 2};
 const int guess3_array[5] = {1, 3, 3, 4, 5};
@@ -43,3 +45,6 @@ int main()
     cout << "CheckIncorrect for " << guess3 << ": " << answer.checkIncorrect(guess3) << endl;
     
 }
+*/
+
+// Part 2 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

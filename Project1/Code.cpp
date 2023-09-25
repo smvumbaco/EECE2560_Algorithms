@@ -34,6 +34,14 @@ void Code::init() {
     }
 }
 
+int Code::get_code_length() const {
+    return code_length;
+}
+
+int Code::get_digit_range() const {
+    return digit_range;
+}
+
 // Returns the index at which num is at in the code or a -1 if it is not in the code
 int Code::in_code(int num) const {
     for (int i = 0; i < code_length; i++) {
@@ -86,11 +94,11 @@ int Code::checkIncorrect(Code &guess) const {
     return incorr;
 }
 
-ostream& operator<<(ostream& out, Code& guess) {
+ostream& operator<<(ostream& out, Code& input_code) {
     string str = "[";
-    for (int i = 0; i < guess.code_length; i++) {
-        str += to_string(guess.code[i]);
-        if (i < guess.code_length - 1) {
+    for (int i = 0; i < input_code.code_length; i++) {
+        str += to_string(input_code.code[i]);
+        if (i < input_code.code_length - 1) {
             str += ", ";
         }
     }

@@ -16,6 +16,8 @@ class Code {
     public:
         Code(int n, int m);
         Code(int n, int m, vector<int> v);
+        int get_code_length() const;
+        int get_digit_range() const;
         int checkCorrect(Code &guess) const; // Maybe friend
         int checkIncorrect(Code &guess) const; // Maybe friend
         friend ostream& operator<<(ostream& out, Code& guess);
