@@ -1,4 +1,4 @@
-// Project 1a
+// Project 1
 // 
 // Main program for Project 1a
 //

@@ -49,4 +49,23 @@ void Mastermind::playGame() {
     // nitializes a random code, prints it to the screen, and then
     // iteratively gets a guess from the user and prints the response until either the codemaker
     // or the codebreaker has won
+    print_secret_code();
+
+    bool status = false;
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (!status)
+        {
+            status = isSolved(getResponse(humanGuess()));
+        }
+    }
+    if (status)
+    {
+        cout << "CODEBREAKER WINS!" << endl;
+    }
+    else
+    {
+        cout << "CODEMAKER WINS!" << endl;
+    }
 }

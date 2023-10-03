@@ -1,4 +1,4 @@
-// Project 1a
+// Project 1
 // 
 // Contains 2 Code constructors, and declarations for get_code_length, 
 //get_digit_range, in_code, in_vector, checkCorrect, checkIncorrect,

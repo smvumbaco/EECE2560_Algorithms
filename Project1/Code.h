@@ -1,4 +1,4 @@
-// Project 1a
+// Project 1
 // 
 // class Code declaration for Mastermind.
 // Sean Vumbaco and Drew Balfour
