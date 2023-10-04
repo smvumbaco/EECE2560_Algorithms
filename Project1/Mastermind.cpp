@@ -46,7 +46,7 @@ bool Mastermind::isSolved(Response& response) {
 }
 
 void Mastermind::playGame() {
-    // nitializes a random code, prints it to the screen, and then
+    // initializes a random code, prints it to the screen, and then
     // iteratively gets a guess from the user and prints the response until either the codemaker
     // or the codebreaker has won
     print_secret_code();

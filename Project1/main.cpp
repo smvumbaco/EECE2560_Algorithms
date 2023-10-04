@@ -12,10 +12,10 @@
 using namespace std;
 
 #include "Code.h"
-#include "Code.cpp"
+#include "Response.h"
+#include "Mastermind.h"
 
-// Part 1 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
 const int guess1_array[5] = {5, 0, 3, 2, 6};
 const int guess2_array[5] = {2, 1, 2, 2, 2};
 const int guess3_array[5] = {1, 3, 3, 4, 5};
@@ -26,6 +26,8 @@ const vector<int> guess3_vector(guess3_array, guess3_array + 5);
 
 int main()
 {
+    // Part 1 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /*
     // Initializes a secret code and prints out th result of calling
     int n, m;
     cout << "How long will your code be?" << endl;
@@ -50,8 +52,11 @@ int main()
 
     cout << "CheckCorrect for " << guess3 << ": " << answer.checkCorrect(guess3) << endl;
     cout << "CheckIncorrect for " << guess3 << ": " << answer.checkIncorrect(guess3) << endl;
-    
-}
-*/
+    */
 
-// Part 2 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Part 2 main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    Mastermind game();
+    game.playGame();
+
+}
