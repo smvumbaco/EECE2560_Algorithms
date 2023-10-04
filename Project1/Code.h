@@ -20,10 +20,12 @@ class Code {
         int in_code(int digit) const;
         int in_vector(int digit, vector<int> int_vector) const;
     public:
+        Code();
         Code(int n, int m);
         Code(int n, int m, vector<int> v);
         int get_code_length() const;
         int get_digit_range() const;
+        vector<int> get_code() const;
         int checkCorrect(Code &guess) const; // Maybe friend
         int checkIncorrect(Code &guess) const; // Maybe friend
         friend ostream& operator<<(ostream& out, Code& guess);

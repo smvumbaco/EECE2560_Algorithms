@@ -15,6 +15,12 @@ using namespace std;
 
 #include "Code.h"
 
+Code::Code() {
+    code_length = 5;
+    digit_range = 10;
+    init();
+}
+
 Code::Code(int n, int m) {
     code_length = n;
     digit_range = m;
@@ -49,6 +55,10 @@ int Code::get_code_length() const {
 
 int Code::get_digit_range() const {
     return digit_range;
+}
+
+vector<int> Code::get_code() const {
+    return code;
 }
 
 // Returns the index at which num is at in the code or a -1 if it is not in the code

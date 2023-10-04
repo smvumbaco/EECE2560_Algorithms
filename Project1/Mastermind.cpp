@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 #include "Mastermind.h"
@@ -11,9 +12,19 @@ Mastermind::Mastermind(int n, int m) {
     code = Code(n, m);
 }
 
+// Look into this later...
 void Mastermind::print_secret_code() const {
     // a function that prints the secret code
-    cout << code << endl;
+    // cout << code << endl;
+    string str = "[";
+    for (int i = 0; i < code.get_code_length(); i++) {
+        str += to_string(code.get_code()[i]);
+        if (i < code.get_code_length() - 1) {
+            str += ", ";
+        }
+    }
+    str += "]";
+    cout << str;
 }
 
 Code Mastermind::humanGuess() {
@@ -58,6 +69,8 @@ void Mastermind::playGame() {
         if (!status)
         {
             status = isSolved(getResponse(humanGuess()));
+        } else {
+            break;
         }
     }
     if (status)
