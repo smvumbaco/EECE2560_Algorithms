@@ -5,6 +5,7 @@
 // and operator<<
 //
 // Sean Vumbaco and Drew Balfour
+// Group 11
 //
 
 #include <iostream>
@@ -15,18 +16,22 @@ using namespace std;
 
 #include "Code.h"
 
+// default class constructor
 Code::Code() {
     code_length = 5;
     digit_range = 10;
     init();
 }
 
+// class constructor given code_length and digit_range
 Code::Code(int n, int m) {
     code_length = n;
     digit_range = m;
     init();
 }
 
+// class constructor given code_length, digit_range, and code
+// used for codebreaker guesses
 Code::Code(int n, int m, vector<int> v) {
     code_length = n;
     digit_range = m;
