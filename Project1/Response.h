@@ -1,3 +1,9 @@
+// Group 11: Drew Balfour & Sean Vumbaco
+// Project 1 (parts a and b)
+
+
+// Contains class Response declaration for Mastermind.
+
 #ifndef RESPONSE_H
 #define RESPONSE_H
 
@@ -6,10 +12,13 @@ using namespace std;
 
 class Response {
     private:
+        // member data
         int num_correct;
         int num_incorrect;
     public:
+        // constructor
         Response(int corr, int incorr);
+        // member functions
         int get_num_correct() const;
         int get_num_incorrect() const;
         void set_num_correct(int new_value);
