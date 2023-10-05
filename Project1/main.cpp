@@ -65,7 +65,11 @@ int main()
 
     // Part b main.cpp ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
     // Declare and play Mastermind game
+=======
+    //initialize Mastermind object, run playGame(), and print secret code
+>>>>>>> 4e0e563164724808566cbbb8c6ea9a7dfa89b1b2
     Mastermind game;
     game.playGame();
 

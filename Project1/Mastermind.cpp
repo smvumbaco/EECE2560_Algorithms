@@ -4,10 +4,12 @@ using namespace std;
 
 #include "Mastermind.h"
 
+// default class constructor
 Mastermind::Mastermind() {
     code = Code(5, 10);
 }
 
+// class constructor given code_length and digit_range for class Code
 Mastermind::Mastermind(int n, int m) {
     code = Code(n, m);
 }
