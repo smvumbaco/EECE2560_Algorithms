@@ -62,14 +62,14 @@ vector<int> Code::get_code() const {
 }
 
 // Returns the index at which num is at in the code or a -1 if it is not in the code
-int Code::in_code(int num) const {
-    for (int i = 0; i < code_length; i++) {
-        if (code[i] == num) {
-            return i;
-        }
-    }
-    return -1;
-}
+// int Code::in_code(int num) const {
+//     for (int i = 0; i < code_length; i++) {
+//         if (code[i] == num) {
+//             return i;
+//         }
+//     }
+//     return -1;
+// }
 
 // Returns true if num is in int_vector and false otherwise
 int Code::in_vector(int num, vector<int> int_vector) const {
@@ -95,21 +95,38 @@ int Code::checkCorrect(Code &guess) const {
 // Returns the number of correct digits in the incorret location
 int Code::checkIncorrect(Code &guess) const {
     int incorr = 0;
-    int index;
-    vector<int> indices(0); // Indices in guess.code that have already been considered
-    for (int i = 0; i < code.size(); i++) {
-        index = Code::in_code(guess.code[i]);
-        if (index >= 0) { // In guess code at index
-            if (index != i) { // NOT at the same index as code
-                if (!Code::in_vector(index, indices)) { // Index is NOT in vector of already-considered indices
-                    incorr++;
-                    indices.push_back(index);
-                }
-            } else { // At the same index as code
-                indices.push_back(index);
+    vector<int> i_indices;
+    vector<int> j_indices;
+    for (int k = 0; k < code_length; k++) {
+        if (code[k] == guess.code[k]) {
+                i_indices.push_back(k);
+                j_indices.push_back(k);
+        }
+    }
+    for (int i = 0; i < code_length; i++) {
+        for (int j = 0; j < code_length; j++) { // Assuming guess and secret code are always the same size
+            if (i != j && code[i] == guess.code[j] && !in_vector(i, i_indices) && !in_vector(j, j_indices)) {
+                incorr++;
+                i_indices.push_back(i);
+                j_indices.push_back(j);
             }
         }
     }
+    // int index;
+    // vector<int> indices(0); // Indices in guess.code that have already been considered
+    // for (int i = 0; i < code.size(); i++) {
+    //     index = Code::in_code(guess.code[i]);
+    //     if (index >= 0) { // In guess code at index
+    //         if (index != i) { // NOT at the same index as code
+    //             if (!Code::in_vector(index, indices)) { // Index is NOT in vector of already-considered indices
+    //                 incorr++;
+    //                 indices.push_back(index);
+    //             }
+    //         } else { // At the same index as code
+    //             indices.push_back(index);
+    //         }
+    //     }
+    // }
     return incorr;
 }
 

@@ -16,15 +16,15 @@ Mastermind::Mastermind(int n, int m) {
 void Mastermind::print_secret_code() const {
     // a function that prints the secret code
     // cout << code << endl;
-    string str = "[";
-    for (int i = 0; i < code.get_code_length(); i++) {
-        str += to_string(code.get_code()[i]);
-        if (i < code.get_code_length() - 1) {
-            str += ", ";
-        }
-    }
-    str += "]";
-    cout << str;
+    // string str = "[";
+    // for (int i = 0; i < code.get_code_length(); i++) {
+    //     str += to_string(code.get_code()[i]);
+    //     if (i < code.get_code_length() - 1) {
+    //         str += ", ";
+    //     }
+    // }
+    // str += "]";
+    // cout << str;
 }
 
 Code Mastermind::humanGuess() {
@@ -32,26 +32,26 @@ Code Mastermind::humanGuess() {
     vector<int> guesses(0);
     int code_length = code.get_code_length();
     int guess;
-    cout << "Code Guess: [";
+    // cout << "Code Guess: [";
     for (int i = 0; i < code_length; i++) {
         cin >> guess;
         guesses.push_back(guess);
-        if (i != code_length - 1) {
-            cout << ", ";
-        }
+        // if (i != code_length - 1) {
+        //     cout << ", ";
+        // }
     }
-    cout << "]";
+    // cout << "]";
     Code guess_code(code_length, code.get_digit_range(), guesses);
     return guess_code;
 }
 
-Response Mastermind::getResponse(Code& guess) {
+Response Mastermind::getResponse(Code guess) {
     // assed one code (a guess code), and returns a response
     Response response(code.checkCorrect(guess), code.checkIncorrect(guess));
     return response;
 }
 
-bool Mastermind::isSolved(Response& response) {
+bool Mastermind::isSolved(Response response) {
     // Passed a response and returns true if the response indicates that the board has been solved
     return response.get_num_correct() == code.get_code_length();
 }
@@ -62,17 +62,24 @@ void Mastermind::playGame() {
     // or the codebreaker has won
     print_secret_code();
 
+    cout << "Welcome to Mastermind!" << endl << "Please enter your first guess below:" << endl;
+
     bool status = false;
+    Response guess(0, 0);
 
     for (int i = 0; i < 10; i++)
     {
         if (!status)
         {
-            status = isSolved(getResponse(humanGuess()));
+            guess = getResponse(humanGuess());
+            cout << endl << "Response: ";
+            status = isSolved(guess);
+            cout << guess << endl;
         } else {
             break;
         }
     }
+
     if (status)
     {
         cout << "CODEBREAKER WINS!" << endl;

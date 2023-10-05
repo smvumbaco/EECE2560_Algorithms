@@ -15,8 +15,8 @@ class Mastermind {
         Mastermind(int n, int m);
         void print_secret_code() const;
         Code humanGuess();
-        Response getResponse(Code& guess);
-        bool isSolved(Response& response);
+        Response getResponse(Code guess);
+        bool isSolved(Response response);
         void playGame();
 };
 
