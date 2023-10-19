@@ -9,13 +9,17 @@
 #include <iostream>
 #include <string>
 #include <list>
+
+#include "Card.h"
+#include "Node.h"
+
 using namespace std;
 
 class Deck 
 {
     private:
         // member data
-        node<Card> *first;
+        Node<Card> *first;
     public:
         // constructor
         Deck();

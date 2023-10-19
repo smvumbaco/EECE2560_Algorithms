@@ -14,15 +14,15 @@ class Card
 {
     private:
         // member data
-        int card_value;
+        string card_value;
         string card_suit;
     public:
         // constructor
         Card();
-        Card(int val, suit s);
+        Card(int val, int s);
         // member functions
         void setValue(int val);
-        void setSuit(string suit);
+        void setSuit(int suit);
         int getValue();
         string getSuit();
         friend ostream& operator<<(ostream& out, Card& card);
