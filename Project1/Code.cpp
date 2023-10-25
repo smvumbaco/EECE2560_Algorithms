@@ -78,22 +78,13 @@ vector<int> Code::get_code() const
     return code;
 }
 
-// Returns the index at which num is at in the code or a -1 if it is not in the code
-// int Code::in_code(int num) const {
-//     for (int i = 0; i < code_length; i++) {
-//         if (code[i] == num) {
-//             return i;
-//         }
-//     }
-//     return -1;
-// }
-
 int Code::in_vector(int num, vector<int> int_vector) const 
 // Returns true if num is in int_vector and false otherwise
 {
     for (int i = 0; i < int_vector.size(); i++) 
     {
-        if (num == int_vector[i]) {
+        if (num == int_vector[i]) 
+        {
             return true;
         }
     }
@@ -102,22 +93,25 @@ int Code::in_vector(int num, vector<int> int_vector) const
 
 int Code::checkCorrect(Code &guess) const 
 // Returns the number of correct digits in the correct location
+// Assumes guess is the same length as 
+// return # of correct digits in correct locations
 {
     int cor = 0;
     for (int i = 0; i < code_length; i++) 
-    {             // iterate through all elements of code
-        if (code[i] == guess.code[i]) {                 // compares elements of code vector to given guess code vector
-            cor++;                                      // add value to # of correct digits in correct locations
+    {             
+        if (code[i] == guess.code[i]) 
+        {                 
+            cor++;                                      
         }
     }
-    return cor;                                         // return # of correct digits in correct locations
+    return cor;                                         
 }
 
 int Code::checkIncorrect(Code &guess) const 
 // Counts the number of correct digits in the incorret location. Function
 // takes a Code and compares every index of the Code's code and compares it
 // to this object's code. Returns the number of correct digits in the incorret 
-// location.
+// location. Assumes guess and secret code are always the same size
 {
     int incorr = 0;
     vector<int> i_indices;
@@ -131,7 +125,6 @@ int Code::checkIncorrect(Code &guess) const
                 j_indices.push_back(k);
         }
     }
-    // Assuming guess and secret code are always the same size
     for (int i = 0; i < code_length; i++) 
     { 
         for (int j = 0; j < code_length; j++) 
@@ -145,21 +138,6 @@ int Code::checkIncorrect(Code &guess) const
             }
         }
     }
-    // int index;
-    // vector<int> indices(0); // Indices in guess.code that have already been considered
-    // for (int i = 0; i < code.size(); i++) {
-    //     index = Code::in_code(guess.code[i]);
-    //     if (index >= 0) { // In guess code at index
-    //         if (index != i) { // NOT at the same index as code
-    //             if (!Code::in_vector(index, indices)) { // Index is NOT in vector of already-considered indices
-    //                 incorr++;
-    //                 indices.push_back(index);
-    //             }
-    //         } else { // At the same index as code
-    //             indices.push_back(index);
-    //         }
-    //     }
-    // }
     return incorr;
 } // end checkIncorrect
 

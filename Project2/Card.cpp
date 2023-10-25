@@ -12,14 +12,14 @@ using namespace std;
 Card::Card()
 // default class Code constructor
 {
-    card_value = "Ace";
-    card_suit = "Club";
+    card_value = 1;
+    card_suit = 0;
 }
 
 Card::Card(int val, int s)
 // class constructor. Val is the card_value, s is the card_suit
 {
-    if (val > 0 && val <13 && s >= 0 && s < 4)
+    if (val > 0 && val <13 && s >= 0 && s < 4) 
     {
         setValue(val);
         setSuit(s);
@@ -93,6 +93,11 @@ string Card::getValue()
         
 string Card::getSuit()
 // Returns Card private data member suit as a card_string
+// For our reference:
+// 0 = "Clubs"
+// 1 = "Diamonds"
+// 2 = "Hearts"
+// 3 = "Spades"
 {
     return card_suit;
 }

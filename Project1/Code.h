@@ -30,8 +30,8 @@ class Code {
         int get_code_length() const;
         int get_digit_range() const;
         vector<int> get_code() const;
-        int checkCorrect(Code &guess) const; // Maybe friend
-        int checkIncorrect(Code &guess) const; // Maybe friend
+        int checkCorrect(Code &guess) const; 
+        int checkIncorrect(Code &guess) const; 
         friend ostream& operator<<(ostream& out, Code& guess);
 };
 

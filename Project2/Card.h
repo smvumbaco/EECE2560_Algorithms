@@ -14,8 +14,8 @@ class Card
 {
     private:
         // member data
-        string card_value;
-        string card_suit;
+        int card_value;
+        int card_suit;
     public:
         // constructor
         Card();
