@@ -19,7 +19,7 @@ Card::Card()
 Card::Card(int val, int s)
 // class constructor. Val is the card_value, s is the card_suit
 {
-    if (val > 0 && val <13 && s >= 0 && s < 4) 
+    if (val > 0 && val < 13 && s >= 0 && s < 4) 
     {
         setValue(val);
         setSuit(s);
@@ -33,65 +33,44 @@ Card::Card(int val, int s)
 
 void Card::setValue(int val)
 // Set Card private data member card_value
+// For our reference:
+// 0 = "Ace"
+// 10 = "Jack"
+// 11 = "Queen"
+// 12 = "King"
 {
-    switch (val) 
+    if (val > 0 && val < 13)
     {
-        case 1:
-            card_value = "Ace";
-            break;
-        case 10:
-            card_value = "Jack";
-            break;
-        case 11:
-            card_value = "Queen";
-            break;
-        case 12:
-            card_value = "King";
-            break;
-        default:
-            if( val > 0 && val < 13)
-            {
-                card_value = string(input_card.card_value);
-            } 
-            else 
-            {
-                cout << "Invalid Card Number" << endl;
-                return NULL;
-            }
-            break;
+        card_value = val;
     }
-} // end setValue
+} 
         
 void Card::setSuit(int s)
 // Set Card private data member card_suit
+// For our reference:
+// 0 = "Clubs"
+// 1 = "Diamonds"
+// 2 = "Hearts"
+// 3 = "Spades"
 {
-    switch (s)
+    if (s < 4 && s => 0) 
     {
-        case 1:
-            card_suit =  "Clubs";
-            break;
-        case 2:
-            card_suit = "Diamonds";
-            break;
-        case 3:
-            card_suit = "Hearts";
-            break;
-        case 4:
-            card_suit = "Spades";
-            break;
-        default:
-            cout << "Invalid Suit" << endl;
-            return NULL;
+        card_suit = s;
     }
-} // end setSuit
+} 
         
-string Card::getValue()
+int Card::getValue()
 // Returns Card private data member card_value as an int
+// For our reference:
+// 0 = "Ace"
+// 10 = "Jack"
+// 11 = "Queen"
+// 12 = "King"
 {
     return card_value;
 }
         
-string Card::getSuit()
+int Card::getSuit()
 // Returns Card private data member suit as a card_string
 // For our reference:
 // 0 = "Clubs"
@@ -106,8 +85,44 @@ ostream& operator<<(ostream& out, Card& input_card)
 // Overloads operator << for class Card. Function takes a Card and a stream
 // output to the card_value and card_suit
 {
-    string text;
-    text = input_card.card_value + " of " + input_card.card_suit;
+    int s, val;
+    s = input_card.getSuit();
+    val = input_card.getValue();
+    string so, vo, text;
+    switch (s)
+    {
+        case 1:
+            so =  "Clubs";
+            break;
+        case 2:
+            so = "Diamonds";
+            break;
+        case 3:
+            so = "Hearts";
+            break;
+        case 4:
+            so = "Spades";
+            break;
+    }
+    switch (val) 
+    {
+        case 1:
+            vo = "Ace";
+            break;
+        case 10:
+            vo = "Jack";
+            break;
+        case 11:
+            vo = "Queen";
+            break;
+        case 12:
+            vo = "King";
+            break;
+        default:
+            vo = string(val);
+            break;
+    }
+    text = vo + " of " + so;
     out << text;
     return out;
-} 
+} // operator<<

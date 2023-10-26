@@ -24,7 +24,7 @@ class Card
         void setValue(int val);
         void setSuit(int suit);
         int getValue();
-        string getSuit();
+        int getSuit();
         friend ostream& operator<<(ostream& out, Card& card);
 };
 
