@@ -23,10 +23,12 @@ class Deck
     public:
         // constructor
         Deck();
+        ~Deck();
         // member functions
         void shuffle();
-        friend ostream& operator<< (ostream& out, Deck& deck)
-        
+        Card deal();
+        void replace(Card card);
+        friend ostream& operator<< (ostream& out, Deck& deck);
 };
 
 #endif //DECK_H

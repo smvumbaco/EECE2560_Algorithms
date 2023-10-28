@@ -13,14 +13,14 @@
 
 using namespace std;
 
-class Node 
+template <class T>
+class Node
 {
-    public:
+    public:  
         Node();
-        Node(Card c, Node n, Node p);
-        Card nodeValue;
-        Node<Card> *next;   
-        Node<Card> *prev;
-}
+        Node(T obj, Node n);
+        T nodeValue;
+        Node<T> *next; 
+};
 
 #endif // NODE_H

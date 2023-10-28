@@ -10,23 +10,16 @@ using namespace std;
 #include "Node.h"
 #include "Card.h"
 
-Node::Node()
+template <class T>
+Node<T>::Node()
 {
-    nodeValue = Card();
-    next = this;
-    prev = this;
+    nodeValue = T();
+    next = NULL;
 }
 
-Node::Node(Card c)
+template <class T>
+Node<T>::Node(T obj, Node n)
 {
-    nodeValue = c;
-    next = this;
-    prev = this;
-}
-
-Node::Node(Card c, Node n, Node p)
-{
-    nodeValue = c;
+    nodeValue = obj;
     next = n;
-    prev = p;
 }

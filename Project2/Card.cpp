@@ -39,7 +39,7 @@ void Card::setValue(int val)
 // 11 = "Queen"
 // 12 = "King"
 {
-    if (val > 0 && val < 13)
+    if (val > 0 && val <= 13)
     {
         card_value = val;
     }
@@ -53,7 +53,7 @@ void Card::setSuit(int s)
 // 2 = "Hearts"
 // 3 = "Spades"
 {
-    if (s < 4 && s => 0) 
+    if (s < 4 && s >= 0) 
     {
         card_suit = s;
     }
@@ -91,16 +91,16 @@ ostream& operator<<(ostream& out, Card& input_card)
     string so, vo, text;
     switch (s)
     {
-        case 1:
+        case 0:
             so =  "Clubs";
             break;
-        case 2:
+        case 1:
             so = "Diamonds";
             break;
-        case 3:
+        case 2:
             so = "Hearts";
             break;
-        case 4:
+        case 3:
             so = "Spades";
             break;
     }
@@ -109,18 +109,17 @@ ostream& operator<<(ostream& out, Card& input_card)
         case 1:
             vo = "Ace";
             break;
-        case 10:
+        case 11:
             vo = "Jack";
             break;
-        case 11:
+        case 12:
             vo = "Queen";
             break;
-        case 12:
+        case 13:
             vo = "King";
             break;
         default:
-            vo = string(val);
-            break;
+            vo = to_string(val);
     }
     text = vo + " of " + so;
     out << text;
