@@ -33,10 +33,12 @@ Deck::Deck()
             curr->nodeValue.setSuit(i);
             curr->nodeValue.setValue(j);
             next = new Node<Card>();
+            back = curr;
             curr->next = next;
             curr = next;
         }
     }
+    delete curr;
 }
 
 Deck::~Deck() {
@@ -83,10 +85,15 @@ void Deck::shuffle()
 Card Deck::deal() {
     // Returns the top card in the deck
     // Removes the card from the deck
+    Node<Card> *c;
+    c = first->nodeValue;
+    first = first->next;
+    return c;
 }
 
 void Deck::replace(Card card) {
     // card is placed on the bottom of the deck
+    back->next = new Node<Card>(card);
 }
 
 // 0 = "Clubs"

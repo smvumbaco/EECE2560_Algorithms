@@ -19,6 +19,7 @@ class Node
     public:  
         Node();
         Node(T obj, Node n);
+        Node(T obj);
         T nodeValue;
         Node<T> *next; 
 };

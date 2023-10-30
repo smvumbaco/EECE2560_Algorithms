@@ -23,3 +23,10 @@ Node<T>::Node(T obj, Node n)
     nodeValue = obj;
     next = n;
 }
+
+template <class T>
+Node<T>::Node(T obj)
+{
+    nodeValue = obj;
+    next = NULL;
+}

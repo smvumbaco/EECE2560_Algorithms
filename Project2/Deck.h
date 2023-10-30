@@ -20,6 +20,7 @@ class Deck
     private:
         // member data
         Node<Card> *first;
+        Node<Card> *back;
     public:
         // constructor
         Deck();
