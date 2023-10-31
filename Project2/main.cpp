@@ -35,16 +35,17 @@ int updatedScore(int score, Card card) {
     }
     if (value == 1) {
         return score + 10 + extraPoint;
-    } else if (11 <= value <= 13) {
+    } else if (value >= 11 && value <= 13) {
         return score + 5 + extraPoint;
-    } else if (8 <= value <= 10) {
+    } else if (value >= 8 && value <= 10) {
         return score + extraPoint;
     } else if (value == 7) {
         return score / 2 + extraPoint;
     } else {
-        return 0;
+        return 0 + extraPoint;
     }
 }
+
 // plays the game by reading instructions from the
 // keyboard (i.e., whether or not flip the next card) and printing the results (including but
 // not limited to the card just flipped, the player’s current score, and whether or not the game
@@ -72,13 +73,14 @@ void playFlip(Deck deck) {
     cout << "Welcome to Flip!\n\n";
     while (playGame) {
         cout << "Enter your Move:" << endl;
-        cout << "0: Flip the next card." << endl;
-        cout << "1: End the game." << endl;
+        cout << "0: End the Game." << endl;
+        cout << "1: Flip the Next Card." << endl;
         cin >> playerInput;
 
         // Potential pain point here (user input, datatypes, etc.)
         if (playerInput) {
             cout << endl << "Card: " << playerHand.front() << endl;
+            // cout << "Card Value: " << (playerHand.front()).getValue();
             playerScore = updatedScore(playerScore, playerHand.front());
             cout << "New Score: " << playerScore << endl;
             if (playerHand.size() > 0) {
@@ -102,6 +104,7 @@ void playFlip(Deck deck) {
 
 int main() 
 {
+    // PART B
     Deck deck = Deck();
     playFlip(deck);
 
@@ -109,7 +112,11 @@ int main()
     // Deck deck = Deck();
     // cout << deck << endl;
     // deck.shuffle();
-    // cout << endl << deck << endl;
+    // cout << deck << endl;
+    // deck.shuffle();
+    // cout << deck << endl;
+    // deck.shuffle();
+    // cout << deck << endl;
 
     return 0;
 }

@@ -24,8 +24,10 @@ Deck::Deck()
     first = new Node<Card>(); // Default constructor for Node. NULL value and pointer
     Node<Card> *curr, *next;
     // prev = first;
-    curr = new Node<Card>();
-    first->next = curr;
+    // curr = new Node<Card>();
+    // first->next = curr;
+    curr = first;
+    first->next = next;
     for (int i = 0; i < 4; i++) 
     {
         for (int j = 1; j <= 13; j++)
@@ -42,7 +44,8 @@ Deck::Deck()
 }
 
 Deck::~Deck() {
-    Node<Card> *curr = first->next;
+    // Node<Card> *curr = first->next;
+    Node<Card> *curr = first;
     Node<Card> *next;
     while (curr != NULL) 
     {
@@ -64,14 +67,16 @@ void Deck::shuffle()
 {
     // Iterate through linked list, add all Cards to vector cards
     vector<Card> cards;
-    Node<Card> *curr = first->next;
+    // Node<Card> *curr = first->next;
+    Node<Card> *curr = first;
     while (curr->next != NULL) {
         cards.push_back(curr->nodeValue);
         curr = curr->next;
     }
 
     // Randomly select indices from cards, assign Card value/suit at that index to location in linked list, remove Card at that index of cards
-    curr = first->next;
+    // curr = first->next;
+    curr = first;
     int randomIndex;
     while (cards.size() > 0) {
         randomIndex = generateRandomInt(cards.size() - 1); // Generate random integer
@@ -82,17 +87,21 @@ void Deck::shuffle()
     }
 }
 
-Card Deck::deal() {
+Card Deck::deal() { // ASSUMES DECK IS NOT EMPTY
     // Returns the top card in the deck
     // Removes the card from the deck
-    Node<Card> *c;
-    c = first->nodeValue;
+
+    // Node<Card> *c;
+    // c = first->nodeValue;
+    // Card c = (first->next)->nodeValue;
+    Card c = first->nodeValue;
     first = first->next;
     return c;
 }
 
 void Deck::replace(Card card) {
     // card is placed on the bottom of the deck
+    // cout << "Back Card: " << back->nodeValue << endl;
     back->next = new Node<Card>(card);
 }
 
@@ -102,7 +111,9 @@ void Deck::replace(Card card) {
 // 3 = "Spades"
 ostream& operator<< (ostream& out, Deck& deck)
 {
-    Node<Card> *curr = (deck.first)->next;
+    // out << deck.first->nodeValue << endl;
+    // Node<Card> *curr = (deck.first)->next;
+    Node<Card> *curr = deck.first;
     while (curr->next != NULL) 
     {
         out << curr->nodeValue << endl;
