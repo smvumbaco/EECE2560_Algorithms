@@ -1,7 +1,8 @@
 // Group 11: Drew Balfour and Sean Vumbaco
 // Project 2 (parts a and b)
 
-// Contains member functions for class Card. Including:
+// Contains member functions for class Card. Including: constructors, setValue,
+// setSuit, getValue, getSuit, operator<< overload
 
 #include <iostream>
 #include <string>
@@ -10,14 +11,16 @@ using namespace std;
 #include "Card.h"
 
 Card::Card()
-// default class Code constructor
+// default class Code constructor: sets card to Ace of Spades
 {
     card_value = 1;
     card_suit = 0;
 }
 
 Card::Card(int val, int s)
-// class constructor. Val is the card_value, s is the card_suit
+// class constructor: Val is the card_value, s is the card_suit. Ensures that
+// card_value is between Ace-King, ensures card_suit is Spade, Heart, Diamond,
+// or club
 {
     if (val > 0 && val < 13 && s >= 0 && s < 4) 
     {
@@ -32,9 +35,10 @@ Card::Card(int val, int s)
 }
 
 void Card::setValue(int val)
-// Set Card private data member card_value
+// Set Card private data member card_value to given int val after ensuring
+// value is between 1-12
 // For our reference:
-// 0 = "Ace"
+// 1 = "Ace"
 // 10 = "Jack"
 // 11 = "Queen"
 // 12 = "King"
@@ -46,7 +50,8 @@ void Card::setValue(int val)
 } 
         
 void Card::setSuit(int s)
-// Set Card private data member card_suit
+// Set Card private data member card_suit to given int s after ensuring s is
+// between 0-3
 // For our reference:
 // 0 = "Clubs"
 // 1 = "Diamonds"
@@ -62,7 +67,7 @@ void Card::setSuit(int s)
 int Card::getValue()
 // Returns Card private data member card_value as an int
 // For our reference:
-// 0 = "Ace"
+// 1 = "Ace"
 // 10 = "Jack"
 // 11 = "Queen"
 // 12 = "King"
@@ -71,7 +76,7 @@ int Card::getValue()
 }
         
 int Card::getSuit()
-// Returns Card private data member suit as a card_string
+// Returns Card private data member card_suit as an int
 // For our reference:
 // 0 = "Clubs"
 // 1 = "Diamonds"
@@ -90,6 +95,7 @@ ostream& operator<<(ostream& out, Card& input_card)
     val = input_card.getValue();
     string so, vo, text;
     switch (s)
+    // switch case to determine suit name as a string given int card_suit
     {
         case 0:
             so =  "Clubs";
@@ -105,6 +111,7 @@ ostream& operator<<(ostream& out, Card& input_card)
             break;
     }
     switch (val) 
+    // switch case to determine suit value as a string given int card_value
     {
         case 1:
             vo = "Ace";

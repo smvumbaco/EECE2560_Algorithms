@@ -106,7 +106,10 @@ int main()
 {
     // PART B
     Deck deck = Deck();
-    playFlip(deck);
+    Card c(1,1);
+    deck.replace(c);
+    cout << deck << endl;
+    // playFlip(deck);
 
     // PART A
     // Deck deck = Deck();

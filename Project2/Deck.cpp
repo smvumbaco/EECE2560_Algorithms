@@ -87,7 +87,8 @@ void Deck::shuffle()
     }
 }
 
-Card Deck::deal() { // ASSUMES DECK IS NOT EMPTY
+Card Deck::deal() 
+{ // ASSUMES DECK IS NOT EMPTY
     // Returns the top card in the deck
     // Removes the card from the deck
 
@@ -99,10 +100,11 @@ Card Deck::deal() { // ASSUMES DECK IS NOT EMPTY
     return c;
 }
 
-void Deck::replace(Card card) {
+void Deck::replace(Card card) 
+{
     // card is placed on the bottom of the deck
-    // cout << "Back Card: " << back->nodeValue << endl;
-    back->next = new Node<Card>(card);
+    back = back->next;
+    back = new Node<Card>(card);
 }
 
 // 0 = "Clubs"

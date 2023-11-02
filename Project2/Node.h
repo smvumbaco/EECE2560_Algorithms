@@ -17,9 +17,11 @@ template <class T>
 class Node
 {
     public:  
+        // constructor
         Node();
         Node(T obj, Node n);
         Node(T obj);
+        // member data
         T nodeValue;
         Node<T> *next; 
 };
