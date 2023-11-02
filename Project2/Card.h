@@ -17,7 +17,7 @@ class Card
         int card_value;
         int card_suit;
     public:
-        // constructor
+        // constructors
         Card();
         Card(int val, int s);
         // member functions

@@ -1,15 +1,9 @@
-// Sean Work:
-// deck constructor
-// shuffle
-// overloaded cout 
-// destructor
-// playFlip
+// Group 11: Drew Balfour and Sean Vumbaco
+// Project 2 (parts a and b)
 
-// Drew Work:
-// Card class
-// make node a template
-// deck's deal function
-// deck's replace function
+// main.cpp file for Flip
+// Part a: Create deck object and print 4 times, shuffling in between
+// Part b: Execute playFlip - simulates a game of Flip
 
 #include <iostream>
 #include <string>
@@ -18,50 +12,77 @@
 using namespace std;
 
 #include "Deck.h"
-#include "Deck.cpp"
+// #include "Deck.cpp"
 
-void printCards(queue<Card> cards) {
-    while (cards.size() > 0) {
+void printCards(queue<Card> cards) 
+// Helper function: prints a queue filled with Card objects
+// Takes a queue<Card> object but returns nothing
+{
+    while (cards.size() > 0) 
+    {
         cout << cards.front() << endl;
         cards.pop();
     }
 }
 
-int updatedScore(int score, Card card) {
+int updatedScore(int score, Card card) 
+// Helper function: performs all logic for updating the player score based on drawn card
+// Takes a score integer and a Card object
+{
     int value = card.getValue();
     int extraPoint = 0;
-    if (card.getSuit() == 2) {
+
+    // Add 1 if suit is Hearts
+    if (card.getSuit() == 2) 
+    {
         extraPoint = 1;
     }
-    if (value == 1) {
+
+    // Add 10 for Ace, 5 for Jack-King, 0 for 8-10
+    // /2 for 7, return 0 for 2-6
+    if (value == 1) 
+    {
         return score + 10 + extraPoint;
-    } else if (value >= 11 && value <= 13) {
+    } 
+    else if (value >= 11 && value <= 13) 
+    {
         return score + 5 + extraPoint;
-    } else if (value >= 8 && value <= 10) {
+    } 
+    else if (value >= 8 && value <= 10) 
+    {
         return score + extraPoint;
-    } else if (value == 7) {
+    } 
+    else if (value == 7) 
+    {
         return score / 2 + extraPoint;
-    } else {
+    } 
+    else 
+    {
         return 0 + extraPoint;
     }
 }
 
-// plays the game by reading instructions from the
-// keyboard (i.e., whether or not flip the next card) and printing the results (including but
-// not limited to the card just flipped, the player’s current score, and whether or not the game
-// is end) to the screen. You should print the top 24 cards and the remaining cards of the deck
-// to the screen. Also, you should print the current hand after flipping a card to the screen.
-// We’ll use the information to see if your program is working correctly
-void playFlip(Deck deck) {
-    for (int i = 0; i < 3; i++) {
+void playFlip(Deck deck) 
+// Executes game of Flip - reads user input to either flip next card or end the game
+// Continuously prints updated player score
+// Prints player hand and cards left in deck for debugging purposes
+// Takes a Deck object but returns nothing
+// Assumes deck is not empty
+{
+    for (int i = 0; i < 3; i++) 
+    // Shuffle deck 3x
+    {
         deck.shuffle();
     }
 
+    // Declare variables
     bool playGame = true;
     int playerInput;
     int playerScore = 0;
     queue<Card> playerHand;
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < 24; i++) 
+    // Assemble player hand
+    {
         playerHand.push(deck.deal());
     }
 
@@ -71,27 +92,38 @@ void playFlip(Deck deck) {
     cout << endl;
 
     cout << "Welcome to Flip!\n\n";
-    while (playGame) {
+    while (playGame) 
+    {
+        // Prompt player
         cout << "Enter your Move:" << endl;
         cout << "0: End the Game." << endl;
         cout << "1: Flip the Next Card." << endl;
         cin >> playerInput;
 
-        // Potential pain point here (user input, datatypes, etc.)
-        if (playerInput) {
+        if (playerInput) 
+        // Player opted to flip a card
+        {
             cout << endl << "Card: " << playerHand.front() << endl;
-            // cout << "Card Value: " << (playerHand.front()).getValue();
             playerScore = updatedScore(playerScore, playerHand.front());
             cout << "New Score: " << playerScore << endl;
-            if (playerHand.size() > 0) {
+            if (playerHand.size() > 0) 
+            // Still cards in player's hand
+            {
                 cout << "The game continues!" << endl;
-            } else {
+            } 
+            else 
+            // No cards left in player's hand
+            {
                 cout << "That ends the game!" << endl;
                 playGame = false;
             }
+            // Remove card from player's hand, replace in bottom of deck
             deck.replace(playerHand.front());
             playerHand.pop();
-        } else {
+        } 
+        else 
+        // Player opted to end the game
+        {
             cout << endl << "That ends the game!" << endl;
             playGame = false;
         }
@@ -99,6 +131,10 @@ void playFlip(Deck deck) {
         // Print the remaining cards in the deck
         cout << "Remaining cards in deck:" << endl;
         cout << deck << endl;
+
+        // Print the player's hand
+        cout << "Player's current hand:" << endl;
+        printCards(playerHand);
     }
 }
 
@@ -106,10 +142,10 @@ int main()
 {
     // PART B
     Deck deck = Deck();
-    Card c(1,1);
-    deck.replace(c);
-    cout << deck << endl;
-    // playFlip(deck);
+    // Card c(1,1);
+    // deck.replace(c);
+    // cout << deck << endl;
+    playFlip(deck);
 
     // PART A
     // Deck deck = Deck();

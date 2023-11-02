@@ -11,7 +11,7 @@ using namespace std;
 #include "Card.h"
 
 Card::Card()
-// default class Code constructor: sets card to Ace of Spades
+// default class Code constructor: sets card to Ace of Clubs
 {
     card_value = 1;
     card_suit = 0;

@@ -1,7 +1,8 @@
 // Group 11: Drew Balfour and Sean Vumbaco
 // Project 2 (parts a and b)
 
-// Contains member functions for class Deck. Including:
+// Contains member function implementations for class Deck. Including:
+// constructor, destructor, shuffle, deal, replace, and operator<< overload
 
 #include <iostream>
 #include <string>
@@ -21,11 +22,8 @@ Deck::Deck()
 // default class Deck constructor. Creates a deck with all cards in order
 // (ace-king, club-diamond-heart-spade)
 {
-    first = new Node<Card>(); // Default constructor for Node. NULL value and pointer
+    first = new Node<Card>(); // Default constructor for Node: Ace of Clubs, NULL pointer
     Node<Card> *curr, *next;
-    // prev = first;
-    // curr = new Node<Card>();
-    // first->next = curr;
     curr = first;
     first->next = next;
     for (int i = 0; i < 4; i++) 
@@ -43,8 +41,10 @@ Deck::Deck()
     delete curr;
 }
 
-Deck::~Deck() {
-    // Node<Card> *curr = first->next;
+Deck::~Deck() 
+// destructor for class Deck. Deallocates all memory reserved for Node<Card> objects
+// Assumes that deck is not empty
+{
     Node<Card> *curr = first;
     Node<Card> *next;
     while (curr != NULL) 
@@ -55,8 +55,10 @@ Deck::~Deck() {
     }
 }
 
-// Generates a random integer between 0 and num (inclusive)
-int generateRandomInt(int num) {
+int generateRandomInt(int num) 
+// Helper function: returns a random integer between 0 and num (inclusive)
+// Assumes num > 0
+{
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dis(0, num);
@@ -64,12 +66,14 @@ int generateRandomInt(int num) {
 }
 
 void Deck::shuffle() 
+// Randomizes order of nodeValues in the deck linked list
+// Assumes deck is not empty
 {
     // Iterate through linked list, add all Cards to vector cards
     vector<Card> cards;
-    // Node<Card> *curr = first->next;
     Node<Card> *curr = first;
-    while (curr->next != NULL) {
+    while (curr->next != NULL) 
+    {
         cards.push_back(curr->nodeValue);
         curr = curr->next;
     }
@@ -78,7 +82,8 @@ void Deck::shuffle()
     // curr = first->next;
     curr = first;
     int randomIndex;
-    while (cards.size() > 0) {
+    while (cards.size() > 0) 
+    {
         randomIndex = generateRandomInt(cards.size() - 1); // Generate random integer
         curr->nodeValue.setValue(cards[randomIndex].getValue()); // Set values at curr
         curr->nodeValue.setSuit(cards[randomIndex].getSuit());
@@ -88,33 +93,28 @@ void Deck::shuffle()
 }
 
 Card Deck::deal() 
-{ // ASSUMES DECK IS NOT EMPTY
-    // Returns the top card in the deck
-    // Removes the card from the deck
-
-    // Node<Card> *c;
-    // c = first->nodeValue;
-    // Card c = (first->next)->nodeValue;
+// Returns the top card in the deck & removes it from the deck
+// Returns a Card object (nodeValue of Node<Card> object)
+// Assumes deck is not empty
+{ 
     Card c = first->nodeValue;
     first = first->next;
     return c;
 }
 
 void Deck::replace(Card card) 
+// Places passed card on bottom of deck (last in line for deal() function)
 {
-    // card is placed on the bottom of the deck
+    // back = back->next;
+    back->next = new Node<Card>(card);
     back = back->next;
-    back = new Node<Card>(card);
 }
 
-// 0 = "Clubs"
-// 1 = "Diamonds"
-// 2 = "Hearts"
-// 3 = "Spades"
 ostream& operator<< (ostream& out, Deck& deck)
+// Overload operator << for cout using overload operator << for Card class
+// Prints all nodeValue (Card) values in the Node<Card> linked list that makes up deck
+// Assumes deck is not empty
 {
-    // out << deck.first->nodeValue << endl;
-    // Node<Card> *curr = (deck.first)->next;
     Node<Card> *curr = deck.first;
     while (curr->next != NULL) 
     {

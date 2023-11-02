@@ -9,11 +9,13 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <stack>
+#include <random>
+#include <vector>
+using namespace std;
 
 #include "Card.h"
 #include "Node.h"
-
-using namespace std;
 
 class Deck 
 {
@@ -22,7 +24,7 @@ class Deck
         Node<Card> *first;
         Node<Card> *back;
     public:
-        // constructor
+        // constructor/destructor
         Deck();
         ~Deck();
         // member functions
