@@ -18,7 +18,7 @@ class Dictionary {
         Dictionary();
         void printDictionary();
         void selectionSortDictionary();
-        string binarySearch(string word);
+        bool binarySearch(string word);     // I changed this to bool so I could use it in a TF statement, lmk if that messes you up
 };
 
 #endif

@@ -15,12 +15,16 @@ class Grid {
     private:
     // member data
     int size;
-    string arr[size][size];
+    string gr[size][size];
     public:
     // constructors
     Grid();
     Grid(string file);
     Grid(string file, int size);
+    int getSize();
+    arr getRow(int i, int j);
+    arr getDiagonal(int i, int j);
+    arr getColumn(int i, int j);
     // member data
 };
 
