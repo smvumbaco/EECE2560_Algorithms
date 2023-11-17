@@ -14,7 +14,7 @@ Grid::Grid()
 // default class constructor...
 {
     size = 0;
-    gr = [][];
+    gr[0][0];
 }
 
 Grid::Grid(string file)
@@ -30,13 +30,13 @@ Grid::Grid(string file)
         }
     }
     string s = g.substr(0,2);
-    size = stoi(s)
+    size = stoi(s);
     int len = size*size;
     g = g.substr(4, len);
     int x = len;
-    for (int i = 0, i < size, i++) // i = row
+    for (int i = 0; i < size; i++) // i = row
     {
-        for (int j = 0, j < size, j++) // j = column
+        for (int j = 0; j < size; j++) // j = column
         {
             gr[i][j] = g.at(len-x);
             x--;
@@ -60,9 +60,9 @@ Grid::Grid(string file, int s)
         }
     }
     g = g.substr(4, len);
-    for (int i = 0, i < size, i++) // i = row
+    for (int i = 0; i < size; i++) // i = row
     {
-        for (int j = 0, j < size, j++) // j = column
+        for (int j = 0; j < size; j++) // j = column
         {
             gr[i][j] = g.at(len-x);
             x--;
@@ -78,7 +78,7 @@ int Grid::getSize()
 arr Grid::getRow(int i, int j)
 {
     arr a[size];
-    for (int k = 0, k < size, k++)
+    for (int k = 0; k < size; k++)
     {
         int col = (k+j)%size;
         a[k] = gr[i][col];
@@ -89,7 +89,7 @@ arr Grid::getRow(int i, int j)
 arr Grid::getColumn(int i, int j)
 {
     arr a[size];
-    for (int k = 0, k < size, k++)
+    for (int k = 0; k < size; k++)
     {
         int row = (k+i)%size;
         a[k]=gr[row][j];
@@ -100,7 +100,7 @@ arr Grid::getColumn(int i, int j)
 arr Grid::getDiagonal(int i, int j)
 {
     arr a[size];
-    for (int k = 0, k < size, k++)
+    for (int k = 0; k < size; k++)
     {
         int col = (k+j)%size;
         int row = (k + i) % size;

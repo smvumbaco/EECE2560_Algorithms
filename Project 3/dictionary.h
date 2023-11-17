@@ -18,7 +18,9 @@ class Dictionary {
         Dictionary();
         void printDictionary();
         void selectionSortDictionary();
-        bool binarySearch(string word);     // I changed this to bool so I could use it in a TF statement, lmk if that messes you up
+        int partition(int p, int r);
+        void quickSortDictionary(int low, int high);
+        int binarySearch(string word, int low, int high);     // I changed this to bool so I could use it in a TF statement, lmk if that messes you up
 };
 
 #endif
