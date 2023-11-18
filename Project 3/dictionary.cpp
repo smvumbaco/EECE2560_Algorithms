@@ -135,3 +135,9 @@ int Dictionary::binarySearch(string word, int low = 0, int high = 88993)
         return binarySearch(word, midpoint+1, high);
     }
 }
+
+void heapSort()
+// uses heapsort to sort dictionary
+{
+
+}

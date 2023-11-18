@@ -20,7 +20,8 @@ class Dictionary {
         void selectionSortDictionary();
         int partition(int p, int r);
         void quickSortDictionary(int low, int high);
-        int binarySearch(string word, int low, int high);     // I changed this to bool so I could use it in a TF statement, lmk if that messes you up
+        int binarySearch(string word, int low, int high);
+        void heapSort();
 };
 
 #endif

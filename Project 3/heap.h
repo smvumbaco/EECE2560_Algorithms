@@ -14,8 +14,20 @@ template <class T>
 class Heap {
     private:
     // member data
+    vector<T> vec;
     public:
     // constructors
+    Heap();
+    Heap(vector<T> v);
+    // member functions
+    T parent(int p);
+    T left(int l);
+    T right(int r);
+    T getItem(int i);
+    void initializeMaxHeap();
+    void maxHeapify();
+    void buildMaxHeap();
+    void heapsort();
 };
 
 #endif // HEAP_H

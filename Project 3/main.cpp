@@ -32,24 +32,22 @@ void findMatches(Dictionary d, Grid g)
     }
 }
 
-void searchLine(Dictionary d, arr a, int size)
+void searchLine(Dictionary d, vector<string> v, int size)
 {
     string f, b;
     int i, j;
     for (i = 0; i < size; i++)
     {
-        f =+ a[i];
+        f =+ v[i];
         if (d.binarySearch(f) != -1)
             cout << f << endl;
     }
     for (i = size; i > 0; i--)
     {
         j = i % (size);
-        b =+ a[j];
+        b =+ v[j];
         if (d.binarySearch(b) != -1)
-        {
             cout << b << endl;
-        }
     }
 }
 

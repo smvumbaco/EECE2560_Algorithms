@@ -36,11 +36,13 @@ Grid::Grid(string file)
     int x = len;
     for (int i = 0; i < size; i++) // i = row
     {
+        vector<string> v;
         for (int j = 0; j < size; j++) // j = column
         {
-            gr[i][j] = g.at(len-x);
+            v.push_back(g.at(len-x));
             x--;
         }
+        grid.push_back(v);
     }
 }
 
@@ -62,11 +64,13 @@ Grid::Grid(string file, int s)
     g = g.substr(4, len);
     for (int i = 0; i < size; i++) // i = row
     {
+        vector<string> v;
         for (int j = 0; j < size; j++) // j = column
         {
-            gr[i][j] = g.at(len-x);
+            v.push_back(g.at(len-x));
             x--;
         }
+        grid.push_back(v);
     }
 }
 
@@ -77,34 +81,34 @@ int Grid::getSize()
 
 arr Grid::getRow(int i, int j)
 {
-    arr a[size];
+    vector<string> a();
     for (int k = 0; k < size; k++)
     {
         int col = (k+j)%size;
-        a[k] = gr[i][col];
+        a.push_back = grid[i][col];
     }
     return a;
 }
 
 arr Grid::getColumn(int i, int j)
 {
-    arr a[size];
+    vector<string> a();
     for (int k = 0; k < size; k++)
     {
         int row = (k+i)%size;
-        a[k]=gr[row][j];
+        a.push_back = grid[row][j];
     }
     return a;    
 }
 
-arr Grid::getDiagonal(int i, int j)
+vector<string> Grid::getDiagonal(int i, int j)
 {
-    arr a[size];
+    vector<string> a();
     for (int k = 0; k < size; k++)
     {
         int col = (k+j)%size;
         int row = (k + i) % size;
-        a[k] = gr[row][col];
+        a.push_back = grid[row][col];
     }
     return a;
 }

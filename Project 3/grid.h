@@ -15,17 +15,17 @@ class Grid {
     private:
     // member data
     int size;
-    string gr[size][size];
+    vector<vector<string>> grid;
     public:
     // constructors
     Grid();
     Grid(string file);
     Grid(string file, int size);
+    // member functions
     int getSize();
-    arr getRow(int i, int j);
-    arr getDiagonal(int i, int j);
-    arr getColumn(int i, int j);
-    // member data
+    vector<string> getRow(int i, int j);
+    vector<string> getDiagonal(int i, int j);
+    vector<string> getColumn(int i, int j);
 };
 
 #endif // GRID_H
