@@ -14,60 +14,88 @@ Heap::Heap()
 //default class constructor
 {
     vec = {};
+    heapsize = 0;
 }
 
 Heap::Heap(vector<T> v)
 {
     vec = v;
+    heapsize = vec.size;
 }
 
-int Grid::parent(int p)
+int Heap::parent(int p)
 {
     if(p <= vec.size)
         return floor((p+1)/2) - 1;
 }
 
-int Grid::left(int l)
+int Heap::left(int l)
 {
-    if(p <= vec.size)
-        return (2 * l) + 1;
+    i = (2 * l) + 1;
+    if(i + 1 <= vec.size)
+        return i;
+    else
+        return l;
 }
 
-int Grid::right(int r)
+int Heap::right(int r)
 {
-    if(p <= vec.size)
-        return (2 * r) + 2
+    i = (2 * r) + 2;
+    if(i + 1 <= vec.size)
+        return i;
+    else
+        return r;
 }
 
-int Grid::getItem(int i)
+T Heap::getItem(int i)
 {
-    if(p <= vec.size)
+    if(i + 1 <= vec.size)
         return vec[i];
 }
 
-void Grid::initializeMaxHeap()
+void Heap::initializeMaxHeap()
 {
-    maxHeapify(vec, 1);
+    heapsize = vec.size;
+    buildMaxHeap();
 }
 
-void Grid::maxHeapify(vector<T> v, int i)
+void Heap::maxHeapify(int i)
 {
     int largest, l, r;
+    T hold;
     l = left(i);
-    r = right(r);
-    if (l <= v.size && v[l] > v[i])
+    r = right(i);
+    if ((l + 1) <= v.size && v[l] > v[i])
         largest = l;
     else
         largest = i;
-
+    if ((r + 1) <= v.size && v[r] > v[largest])
+        largest = r;
+    if (largest != i)
+    {
+        hold = v[i]
+        v[i] = v[largest];
+        v[largest] = hold;
+        maxHeapify(largest);
+    }
 }
 
-void Grid::buildMaxHeap()
+void Heap::buildMaxHeap()
 {
-
+    for (int i = (floor(heapsize / 2)) - 1, i == 0, i--)
+        maxHeapify(i);
 }
 
-void Grid::heapsort()
+void Heap::heapsort()
 {
-
+    T hold;
+    initializeMaxHeap();
+    for (int i = vec.size - 1, i == 1, i--)
+    {
+        hold = v[i];
+        v[i] = v[1];
+        v[1] = hold;
+        heapsize--;
+        maxHeapify(1);
+    }
 }

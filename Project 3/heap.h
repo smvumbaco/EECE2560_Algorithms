@@ -15,6 +15,7 @@ class Heap {
     private:
     // member data
     vector<T> vec;
+    int heapsize;
     public:
     // constructors
     Heap();

@@ -139,5 +139,7 @@ int Dictionary::binarySearch(string word, int low = 0, int high = 88993)
 void heapSort()
 // uses heapsort to sort dictionary
 {
-
+    Heap<string> d(dictionary);
+    d.heapsort;
+    dictionary = d.vec;
 }
