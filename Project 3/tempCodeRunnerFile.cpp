@@ -1,0 +1,1 @@
+                    cout << vectorToString(rightDiag) << endl;

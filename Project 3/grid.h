@@ -23,9 +23,12 @@ class Grid {
     Grid(string file, int size);
     // member functions
     int getSize();
-    vector<string> getRow(int i, int j);
-    vector<string> getDiagonal(int i, int j);
-    vector<string> getColumn(int i, int j);
+    void printGrid();
+    vector<string> getRow(int row);
+    vector<string> getColumn(int col);
+    vector<string> getLeftDiagonal(int row, int col);
+    vector<string> getRightDiagonal(int row, int col);
+    vector<vector<string>> getGrid();
 };
 
 #endif // GRID_H

@@ -24,6 +24,7 @@
 using namespace std;
 
 #include "Dictionary.h"
+#include "Heap.h"
 
 Dictionary::Dictionary()
 {
@@ -130,16 +131,18 @@ int Dictionary::binarySearch(string word, int low = 0, int high = 88993)
     {
         return binarySearch(word, low, midpoint);
     }
-    if (word > dictionary[midpoint])
+    // if (word > dictionary[midpoint])
+    else
     {
         return binarySearch(word, midpoint+1, high);
     }
 }
 
-void heapSort()
+void Dictionary::heapSort()
 // uses heapsort to sort dictionary
 {
     Heap<string> d(dictionary);
-    d.heapsort;
-    dictionary = d.vec;
+    d.heapsort();
+    // dictionary = d.vec;
+    dictionary = d.getVec();
 }

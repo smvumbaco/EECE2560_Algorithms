@@ -21,14 +21,16 @@ class Heap {
     Heap();
     Heap(vector<T> v);
     // member functions
-    T parent(int p);
-    T left(int l);
-    T right(int r);
+    int parent(int p);
+    int left(int l);
+    int right(int r);
     T getItem(int i);
     void initializeMaxHeap();
-    void maxHeapify();
+    // void maxHeapify();
+    void maxHeapify(int i);
     void buildMaxHeap();
     void heapsort();
+    vector<T> getVec();
 };
 
 #endif // HEAP_H
