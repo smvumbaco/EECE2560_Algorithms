@@ -1,22 +1,6 @@
 // Group 11: Drew Balfour and Sean Vumbaco 
 // Project 3 (parts a and b)
 
-// Write a program that solves a word search puzzle. The program reads an n x n grid of letters from
-// a file and prints out all the words that can be found in the grid. Words can be found in the array
-// by starting from any letter and reading left, right, up, down, or along any of the four diagonals.
-// Words can also wrap around the edges of the array. Words must be at least 5 characters long.
-// The list of k possible words is included in the file dictionary. Several sample word search puzzles
-// are also provided.
-// The goal is to find an algorithm that solves this problem that runs as quickly as possible for large
-// n and k.
-
-// Implement a class called dictionary that reads the words from the dictionary file and stores
-// them in a vector, and which includes:
-// (a) a function to read the words from the dictionary file,
-// (b) a function to print the word vector,
-// (c) a function that sorts the words using selectionsort,
-// (d) a function to handle word lookups using binary search.
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -54,7 +38,7 @@ void Dictionary::printDictionary()
     }
 }
 
-void Dictionary::selectionSortDictionary()
+void Dictionary::selectionSort()
 // Uses selection sort to order the dictionary using comparison of ASCII characters
 {
     int n = dictionary.size();
@@ -105,13 +89,13 @@ int Dictionary::partition(int p, int r)
     return i+1; // Pivot location
 }
 
-void Dictionary::quickSortDictionary(int low = 0, int high = 88993)
+void Dictionary::quickSort(int low = 0, int high = 88993)
 {
     if (low < high) 
     {
         int s = partition(low, high);
-        quickSortDictionary(low, s-1); // Sort the two
-        quickSortDictionary(s+1, high); // Subarrays recursively
+        quickSort(low, s-1); // Sort the two
+        quickSort(s+1, high); // Subarrays recursively
     }
 }
 
@@ -128,8 +112,10 @@ int Dictionary::binarySearch(string word, int low = 0, int high = 88993)
         if (word > dictionary[midpoint])
             return binarySearch(word, midpoint + 1, high);
     }
-    else
-        return -1;
+    // else
+    //     return -1;
+    return -1; // Handles case where low > high (even initially)
+
 //    int midpoint = (low + high) / 2;
 //    if (word == dictionary[midpoint]) // Value has been found
 //    {

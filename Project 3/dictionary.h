@@ -17,9 +17,9 @@ class Dictionary {
     public:
         Dictionary();
         void printDictionary();
-        void selectionSortDictionary();
+        void selectionSort();
         int partition(int p, int r);
-        void quickSortDictionary(int low, int high);
+        void quickSort(int low, int high);
         int binarySearch(string word, int low, int high);
         void heapSort();
 };

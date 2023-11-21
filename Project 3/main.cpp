@@ -95,7 +95,7 @@ void checkVector(Dictionary d, vector<string> v)
             {
                 if (d.binarySearch(letters) != -1)
                 {
-                    cout << letters << endl;
+                    // cout << letters << endl;
                     // returnWord = returnWord + letters + " ";
                     if (letters != "" && !itemInVector(letters, returnWords))
                     {
@@ -120,8 +120,8 @@ void searchLine(Dictionary d, const vector<string>& v, int size) // make this re
 
     // returnWord = checkVector(d, v);
 
-    cout << vectorToString(v) << endl;
-    cout << vectorToString(vRev) << endl;
+    // cout << vectorToString(v) << endl;
+    // cout << vectorToString(vRev) << endl;
     checkVector(d, v);
     checkVector(d, vRev);
     // if (returnWord != "")
@@ -138,8 +138,8 @@ void searchLine(Dictionary d, const vector<string>& v, int size) // make this re
     vector<string> vRev2 = vRev;
     firstToLast(v2);
     firstToLast(vRev2);
-    cout << vectorToString(v2) << endl;
-    cout << vectorToString(vRev2) << endl;
+    // cout << vectorToString(v2) << endl;
+    // cout << vectorToString(vRev2) << endl;
 
     while (v2 != v)
     {
@@ -168,48 +168,48 @@ void findMatches(Dictionary d, Grid g) // have this print all the words that wer
     int s = g.getSize();
     for (int i = 0; i < s; i++)
     {
-        cout << "Calling getRow in row " << i << endl;
+        // cout << "Calling getRow in row " << i << endl;
         searchLine(d, g.getRow(i), s);
-        cout << vectorToString(returnWords, false) << endl;
-        cout << "Calling getColumn in column " << i << endl;
+        // cout << vectorToString(returnWords, false) << endl;
+        // cout << "Calling getColumn in column " << i << endl;
         searchLine(d, g.getColumn(i), s);
-        cout << vectorToString(returnWords, false) << endl;
+        // cout << vectorToString(returnWords, false) << endl;
         for (int j = 0; j < s; j++)
         {
             if (i == 0)
             {
                 if (j <= s - 5)
                 {
-                    cout << "Calling LeftDiagonal at index " << i << ", " << j << endl;
+                    // cout << "Calling LeftDiagonal at index " << i << ", " << j << endl;
                     vector<string> leftDiag = g.getLeftDiagonal(i, j);
                     // cout << vectorToString(leftDiag) << endl;
                     searchLine(d, leftDiag, leftDiag.size());
-                    cout << vectorToString(returnWords, false) << endl;
+                    // cout << vectorToString(returnWords, false) << endl;
                 }
                 if (j >= 4)
                 {
-                    cout << "Calling RightDiagonal at index " << i << ", " << j << endl;
+                    // cout << "Calling RightDiagonal at index " << i << ", " << j << endl;
                     vector<string> rightDiag = g.getRightDiagonal(i, j);
                     // cout << vectorToString(rightDiag, false) << endl;
                     searchLine(d, rightDiag, rightDiag.size());
-                    cout << vectorToString(returnWords, false) << endl;
+                    // cout << vectorToString(returnWords, false) << endl;
                 }
             }
             else 
             {
                 if (i <= s - 5)
                 {
-                    cout << "Calling LeftDiagonal at index " << i << ", " << 0 << endl;
+                    // cout << "Calling LeftDiagonal at index " << i << ", " << 0 << endl;
                     vector<string> leftDiag = g.getLeftDiagonal(i, 0);
                     // cout << vectorToString(leftDiag) << endl;
                     searchLine(d, leftDiag, leftDiag.size());
-                    cout << vectorToString(returnWords, false) << endl;
+                    // cout << vectorToString(returnWords, false) << endl;
 
-                    cout << "Calling RightDiagonal at index " << i << ", " << s - 1 << endl;
+                    // cout << "Calling RightDiagonal at index " << i << ", " << s - 1 << endl;
                     vector<string> rightDiag = g.getRightDiagonal(i, s - 1);
                     // cout << vectorToString(rightDiag, false) << endl;
                     searchLine(d, rightDiag, rightDiag.size());
-                    cout << vectorToString(returnWords, false) << endl;
+                    // cout << vectorToString(returnWords, false) << endl;
                     
                     break;
                 }
@@ -237,18 +237,18 @@ void search(Dictionary d, int sortType)
             cerr << "Exception caught: " << endl << e.what() << endl << endl;
         }
     }
-    cout << endl << "Enter the sorting algorithm to be used.\n0: Selection Sort\n1: Quick Sort\n2: Heap Sort\nEnter Here: ";
-    cin >> sortType;
+    // cout << endl << "Enter the sorting algorithm to be used.\n0: Selection Sort\n1: Quick Sort\n2: Heap Sort\nEnter Here: ";
+    // cin >> sortType;
     if (sortType == 1) 
     {
-        d.quickSortDictionary();
+        d.quickSort();
     } 
     else if (sortType == 2) 
     {
         d.heapSort();
     }
     else {
-        d.selectionSortDictionary();
+        d.selectionSort();
     }
     findMatches(d, gridFile);
 }
@@ -257,28 +257,38 @@ int main()
 {
     //Part A
     Dictionary dict;
-    dict.quickSortDictionary();
-    //dict.heapSort();
-    Grid g1("input15");
-     g1.printGrid();
 
+    // SORTING TESTING
+    // dict.selectionSort();
+    // dict.quickSort();
+    // dict.heapSort();
+
+    // FIND MATCHES TESTING GRID 1
+    // Grid g1("input15");
+    // g1.printGrid();
+    // cout << "Finding matches for grid 1..." << endl;
+    // findMatches(dict, g1);
+
+    // FIND MATCHES TESTING GRID 2
     // Grid g2("input30");
-    // Grid g3("input50");
-
-    cout << "Finding matches for grid 1..." << endl;
-    findMatches(dict, g1);
-
-//    cout << dict.binarySearch("students") << endl;
-//    cout << dict.binarySearch("educate") << endl;
-//    cout << dict.binarySearch("educated") << endl;
-//    cout << dict.binarySearch("northeastern") << endl;
-//    cout << dict.binarySearch("primroses") << endl;
-
-    // cout << endl << "Finding matches for grid 2..." << endl;
+    // g2.printGrid();
+    // cout << "Finding matches for grid 2..." << endl;
     // findMatches(dict, g2);
-    // cout << endl << "Finding matches for grid 3..." << endl;
+
+    // FIND MATCHES TESTING GRID 3
+    // Grid g3("input50");
+    // g3.printGrid();
+    // cout << "Finding matches for grid 3..." << endl;
     // findMatches(dict, g3);
 
+    // BINARY SEARCH TESTING
+    // cout << dict.binarySearch("students") << endl;
+    // cout << dict.binarySearch("educate") << endl;
+    // cout << dict.binarySearch("educated") << endl;
+    // cout << dict.binarySearch("northeastern") << endl;
+    // cout << dict.binarySearch("primroses") << endl;
+
+    // DICTIONARY TESTING
     // Dictionary dict;
     // dict.selectionSortDictionary();
     // dict.quickSortDictionary();
@@ -286,4 +296,9 @@ int main()
     // dict.printDictionary();
     // cout << "The word sksksksk is located at index " << dict.binarySearch("zymogenic") << endl;
     // cout << "Expecting -1..." << endl;
+
+    // SEARCH TESTING
+    // search(dict, 1); // quickSort
+    // search(dict, 2); // heapSort
+    search(dict, 0); // selectionSort
 }
