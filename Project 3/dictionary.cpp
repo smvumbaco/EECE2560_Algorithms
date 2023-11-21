@@ -23,8 +23,8 @@
 #include <fstream>
 using namespace std;
 
-#include "Dictionary.h"
-#include "Heap.h"
+#include "dictionary.h"
+#include "heap.h"
 
 Dictionary::Dictionary()
 {
@@ -86,9 +86,9 @@ int Dictionary::partition(int p, int r)
 {
     string x = dictionary[r]; // Pivot
     int i = p - 1; // End of left list
-    for (int j = p; j < r - 1; j++) // Scan unassigned
+    for (int j = p; j <= r; j++ )//for (int j = p; j < r - 1; j++) // Scan unassigned
     {
-        if (dictionary[j] <= x) // Belongs in the left
+        if(dictionary[j] < x)//if (dictionary[j] <= x) // Belongs in the left
         {
             i += 1; // increase size of left
             // Shift right list right
@@ -119,23 +119,35 @@ void Dictionary::quickSortDictionary(int low = 0, int high = 88993)
 int Dictionary::binarySearch(string word, int low = 0, int high = 88993)
 {
     int midpoint = (low + high) / 2;
-    if (word == dictionary[midpoint]) // Value has been found
+    if (low <= high)
     {
-        return midpoint;
+        if (word == dictionary[midpoint])
+            return midpoint;
+        if (word < dictionary[midpoint])
+            return binarySearch(word, low, midpoint - 1);
+        if (word > dictionary[midpoint])
+            return binarySearch(word, midpoint + 1, high);
     }
-    if (low >= high) // Value has not been found
-    {
-        return -1;
-    }
-    if (word < dictionary[midpoint])
-    {
-        return binarySearch(word, low, midpoint);
-    }
-    // if (word > dictionary[midpoint])
     else
-    {
-        return binarySearch(word, midpoint+1, high);
-    }
+        return -1;
+//    int midpoint = (low + high) / 2;
+//    if (word == dictionary[midpoint]) // Value has been found
+//    {
+//        return midpoint;
+//    }
+//    if (low >= high) // Value has not been found
+//    {
+//        return -1;
+//    }
+//    if (word < dictionary[midpoint])
+//    {
+//        return binarySearch(word, low, midpoint - 1);
+//    }
+//    //if (word > dictionary[midpoint])
+//    else
+//    {
+//        return binarySearch(word, midpoint+1, high);
+//    }
 }
 
 void Dictionary::heapSort()
