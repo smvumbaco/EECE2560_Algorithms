@@ -2,8 +2,9 @@
 // Project 3 (parts a and b)
 
 
-// Main program file for Project 3, executes findMatches (part a) and
-// search(int) (part b)
+// Main program file for Project 3
+// Part a: Executes findMatches
+// Part b: Executes search(int)
 
 #include <iostream>
 #include <string>
@@ -18,6 +19,7 @@ using namespace std;
 #include "grid.h"
 #include "grid.cpp"
 
+// Global variable
 vector<string> returnWords;
 
 string vectorToString(vector<string> v, bool newLines = false)
@@ -28,7 +30,6 @@ string vectorToString(vector<string> v, bool newLines = false)
     {
         while (v.size() > 0)
         {
-            // returnString = returnString + v[0];            
             returnString = returnString + v[0] + " ";
             v.erase(v.begin());
         }
@@ -42,7 +43,7 @@ string vectorToString(vector<string> v, bool newLines = false)
         }
     }
     return returnString;
-}
+} // end vectorToString
 
 bool itemInVector(string item, const vector<string> v)
 // Returns true if item is in vector, false otherwise
@@ -55,7 +56,6 @@ bool itemInVector(string item, const vector<string> v)
             return true;
         }
     }
-
     // Return false if not found
     return false;
 }
@@ -80,9 +80,10 @@ void firstToLast(vector<string>& v)
 }
 
 void checkVector(Dictionary d, vector<string> v)
+// checks a given vector of strings to see if there are any words from the
+// given dictionary contained within
 {
     string letters = "";
-    // string returnWord = "";
     int j;
     int size = v.size();
     for (int i = 0; i < size - 4; i++)
@@ -91,135 +92,88 @@ void checkVector(Dictionary d, vector<string> v)
         for (j = i; j < size; j++)
         {
             letters = letters + v[j];
-            if (j >= i + 4) // Ensure the word is at least 5 characters long
+            // Ensure the word is at least 5 characters long
+            if (j >= i + 4)
             {
                 if (d.binarySearch(letters) != -1)
                 {
-                    // cout << letters << endl;
-                    // returnWord = returnWord + letters + " ";
+                    // add letters to returnWords string vector if it's not already
+                    // there and if it is a word
                     if (letters != "" && !itemInVector(letters, returnWords))
                     {
                         returnWords.push_back(letters);
                     }
                 }
-                // else 
-                // {
-                //     returnWord = returnWord + "";
-                // }
             }
         }
     }
-    // return returnWord;
-}
+} // end checkVector
 
-void searchLine(Dictionary d, const vector<string>& v, int size) // make this return a vector of strings that were found in the line
+void searchLine(Dictionary d, const vector<string>& v, int size)
+// checks a given vector in order and in reverse order from every element
 {
     vector<string> vRev = reverseVector(v);
-    // string returnWord;
-    // vector<string> returnWords;
-
-    // returnWord = checkVector(d, v);
-
-    // cout << vectorToString(v) << endl;
-    // cout << vectorToString(vRev) << endl;
     checkVector(d, v);
     checkVector(d, vRev);
-    // if (returnWord != "")
-    // {
-    //     returnWords.push_back(returnWord);
-    // }
-    // returnWord = checkVector(d, vRev);
-    // if (returnWord != "")
-    // {
-    //     returnWords.push_back(returnWord);
-    // }
-
     vector<string> v2 = v;
     vector<string> vRev2 = vRev;
     firstToLast(v2);
     firstToLast(vRev2);
-    // cout << vectorToString(v2) << endl;
-    // cout << vectorToString(vRev2) << endl;
-
+    // keep checking vectors until v2 is the same as the original v
     while (v2 != v)
     {
         checkVector(d, v2);
-
         checkVector(d, vRev2);
-        // returnWord = checkVector(d, v2);
-        // if (returnWord != "" && !itemInVector(returnWord, returnWords))
-        // {
-        //     returnWords.push_back(returnWord);
-        // }
-        // returnWord = checkVector(d, vRev2);
-        // if (returnWord != "" && !itemInVector(returnWord, returnWords))
-        // {
-        //     returnWords.push_back(returnWord);
-        // }
-
         firstToLast(v2);
         firstToLast(vRev2);
     }
-}
+} // end searchLine
 
-void findMatches(Dictionary d, Grid g) // have this print all the words that were found in the lines
+void findMatches(Dictionary d, Grid g)
 // Passed a dictionary and grid, prints all the words that can be found in the grid
 {
     int s = g.getSize();
     for (int i = 0; i < s; i++)
     {
-        // cout << "Calling getRow in row " << i << endl;
         searchLine(d, g.getRow(i), s);
-        // cout << vectorToString(returnWords, false) << endl;
-        // cout << "Calling getColumn in column " << i << endl;
         searchLine(d, g.getColumn(i), s);
-        // cout << vectorToString(returnWords, false) << endl;
         for (int j = 0; j < s; j++)
         {
             if (i == 0)
             {
+                // ensures that any words created would be at least 5 letters
                 if (j <= s - 5)
                 {
-                    // cout << "Calling LeftDiagonal at index " << i << ", " << j << endl;
                     vector<string> leftDiag = g.getLeftDiagonal(i, j);
-                    // cout << vectorToString(leftDiag) << endl;
                     searchLine(d, leftDiag, leftDiag.size());
-                    // cout << vectorToString(returnWords, false) << endl;
                 }
+                // ensures that any words created would be at least 5 letters
                 if (j >= 4)
                 {
-                    // cout << "Calling RightDiagonal at index " << i << ", " << j << endl;
                     vector<string> rightDiag = g.getRightDiagonal(i, j);
-                    // cout << vectorToString(rightDiag, false) << endl;
                     searchLine(d, rightDiag, rightDiag.size());
-                    // cout << vectorToString(returnWords, false) << endl;
                 }
             }
             else 
             {
+                // ensures that any words created would be at least 5 letters
                 if (i <= s - 5)
                 {
-                    // cout << "Calling LeftDiagonal at index " << i << ", " << 0 << endl;
                     vector<string> leftDiag = g.getLeftDiagonal(i, 0);
-                    // cout << vectorToString(leftDiag) << endl;
                     searchLine(d, leftDiag, leftDiag.size());
-                    // cout << vectorToString(returnWords, false) << endl;
-
-                    // cout << "Calling RightDiagonal at index " << i << ", " << s - 1 << endl;
                     vector<string> rightDiag = g.getRightDiagonal(i, s - 1);
-                    // cout << vectorToString(rightDiag, false) << endl;
                     searchLine(d, rightDiag, rightDiag.size());
-                    // cout << vectorToString(returnWords, false) << endl;
-                    
                     break;
                 }
             }
         }
     }
     cout << vectorToString(returnWords, true) << endl;
-}
+} // end findMatches
 
 void search(Dictionary d, int sortType)
+// reads the name of a grid file from the keyboard and prints out all words
+// from the given dictionary that can be found in the grid.
 {
     string gridFile;
     bool goodInput = false;
@@ -237,8 +191,7 @@ void search(Dictionary d, int sortType)
             cerr << "Exception caught: " << endl << e.what() << endl << endl;
         }
     }
-    // cout << endl << "Enter the sorting algorithm to be used.\n0: Selection Sort\n1: Quick Sort\n2: Heap Sort\nEnter Here: ";
-    // cin >> sortType;
+    // User selection of sorting type
     if (sortType == 1) 
     {
         d.quickSort();
@@ -251,7 +204,7 @@ void search(Dictionary d, int sortType)
         d.selectionSort();
     }
     findMatches(d, gridFile);
-}
+} // end search
 
 int main()
 {
@@ -297,6 +250,7 @@ int main()
     // cout << "The word sksksksk is located at index " << dict.binarySearch("zymogenic") << endl;
     // cout << "Expecting -1..." << endl;
 
+    // PART B
     // SEARCH TESTING
     search(dict, 1); // quickSort
     // search(dict, 2); // heapSort

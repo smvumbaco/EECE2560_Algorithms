@@ -1,7 +1,6 @@
 // Group 11: Drew Balfour and Sean Vumbaco 
 // Project 3 (parts a and b)
 
-
 // Contains class Heap declaration
 
 #ifndef HEAP_H
@@ -14,7 +13,8 @@
 using namespace std;
 
 template <class T>
-class Heap {
+class Heap
+{
     private:
     // member data
     vector<T> vec;
@@ -29,7 +29,6 @@ class Heap {
     int right(int r);
     T getItem(int i);
     void initializeMaxHeap();
-    // void maxHeapify();
     void maxHeapify(int i);
     void buildMaxHeap();
     void heapsort();

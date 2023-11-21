@@ -12,7 +12,8 @@
 #include <vector>
 using namespace std;
 
-class Grid {
+class Grid
+{
     private:
     // member data
     int size;
