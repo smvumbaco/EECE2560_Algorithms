@@ -298,7 +298,7 @@ int main()
     // cout << "Expecting -1..." << endl;
 
     // SEARCH TESTING
-    // search(dict, 1); // quickSort
+    search(dict, 1); // quickSort
     // search(dict, 2); // heapSort
-    search(dict, 0); // selectionSort
+    // search(dict, 0); // selectionSort
 }
