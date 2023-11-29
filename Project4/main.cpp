@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <limits.h>
+#include "Board.h"
 #include "d_matrix.h"
 #include "d_except.h"
 #include <string>
@@ -25,15 +26,20 @@ int numSolutions = 0;
 class Board
 {
     public:
-        Board(int)
+        Board(int);
         void clear();
         void initialize(ifstream &fin);
         void print();
         bool isBlank(int, int);
-        ValueType getCell(int, int);
+        ValueType getCell(int, int); 
+        void setCell(int, int, int);
+        void clearCell(int, int);
+        void printConflicts();
+        bool isSolved();
     private:
+        // The following matrices go from 1 to BoardSize in each
+        // dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
         matrix<ValueType> value;
-        matrix<ValueType> conflicts;
 };
 
 Board::Board(int sqSize)
@@ -76,8 +82,10 @@ ostream &operator<<(ostream &ostr, vector<int> &v)
 // Overloaded output operator for vector class.
 {
     for (int i = 0; i < v.size(); i++)
-        ostr <, v[i] << " ";
-    cout << endl;
+        ostr << v[i] << " ";
+    // cout << endl;
+    ostr << endl;
+    return ostr;
 }
 
 ValueType Board:: getCell(int i, int j)
@@ -90,6 +98,28 @@ ValueType Board:: getCell(int i, int j)
         throw rangeError("bad value in getCell");
 }
 
+void Board::setCell(int i, int j, int newValue)
+// Returns nothing - just updates cell value. Throws an exception
+// if bad values are passed.
+{
+    if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
+        value[i][j] = newValue;
+    else
+        throw rangeError("bad value in getCell");
+    // Update conflicts vectors
+}
+
+void Board::clearCell(int i, int j)
+// Returns nothing - just clears cell value. Throws an exception
+// if bad values are passed.
+{
+    if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
+        value[i][j] = Blank;
+    else
+        throw rangeError("bad value in getCell");
+    // Update conflicts vectors
+}
+
 bool Board::isBlank(int i, int j)
 // Returns true if cell i, j is blank, and false otherwise.
 {
@@ -98,7 +128,7 @@ bool Board::isBlank(int i, int j)
     return (getCell(i, j) == Blank);
 }
 
-void board::print()
+void Board::print()
 // Prints the current board.
 {
     for (int i = 1; i <= BoardSize; i++) {
@@ -126,6 +156,25 @@ void board::print()
     cout << "-";
     cout << endl;
 } // end print()
+
+
+void Board::printConflicts()
+// Prints conflict vectors
+{
+
+}
+
+bool Board::isSolved()
+// Checks to see if the board has been solved
+{
+    for (int i = 0; i < BoardSize; i++)
+        for (int j = 0; j < BoardSize; j++)
+        {
+            if (value[i][j] == Blank)
+                return false;
+        }
+    return true;
+}
 
 int main()
 {
