@@ -3,6 +3,20 @@
 
 // Main program file for Project 4, ...
 
+// Part a:
+//The code you submit should read each Sudoku board from the file one-by-one, print the
+//board and conflicts vectors to the screen, and check to see if the board has been solved (all
+//boards will not be solved at this point).
+
+// Part b:
+//Complete your program that solves Sudoku puzzles. Your algorithm should be based on
+//recursion.
+//Your algorithm should read each board from the text file, solve it, print the solution, and
+//print the number of recursive iterations needed to solve that board. After all boards have
+//been solved, print the average number of recursive calls needed to solve all the boards.
+//Print the total number of your recursive calls.
+
+
 #include <iostream>
 #include <limits.h>
 #include "Board.h"
@@ -22,6 +36,8 @@ const int BoardSize = SquareSize * SquareSize;
 const int MinValue = 1;
 const int MaxValue = 9;
 int numSolutions = 0;
+const int NoConflict = 0;
+const int YesConflict = 1;
 
 class Board
 {
@@ -36,14 +52,17 @@ class Board
         void clearCell(int, int);
         void printConflicts();
         bool isSolved();
+        void updateConflicts(int, int, int, int);
     private:
         // The following matrices go from 1 to BoardSize in each
         // dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
         matrix<ValueType> value;
+        matrix<vector<ValueType>> conflicts;
 };
 
 Board::Board(int sqSize)
-    : value(BoardSize+1, BoardSize+1)
+    : value(BoardSize+1, BoardSize+1),
+        conflicts(BoardSize+1, BoardSize+1, vector<ValueType> (BoardSize, NoConflict))
 {
     clear();
 }
@@ -52,7 +71,11 @@ void Board::clear()
 {
     for (int i = 1; i <= BoardSize; i++)
         for (int j = 1; j <= BoardSize; j++)
+        {
             value[i][j] = Blank;
+            for (int k = 1; k <= BoardSize; k++)
+                conflicts[i][j][k] = NoConflict;
+        }
 }
 
 void Board::initialize(std::ifstream &fin)
@@ -107,17 +130,23 @@ void Board::setCell(int i, int j, int newValue)
     else
         throw rangeError("bad value in getCell");
     // Update conflicts vectors
+    updateConflicts(i, j, newValue, YesConflict);
 }
 
 void Board::clearCell(int i, int j)
 // Returns nothing - just clears cell value. Throws an exception
 // if bad values are passed.
 {
+    int val;
     if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
+    {
+        val = value[i][j];
         value[i][j] = Blank;
+    }
     else
         throw rangeError("bad value in getCell");
     // Update conflicts vectors
+    updateConflicts(i, j, val, NoConflict);
 }
 
 bool Board::isBlank(int i, int j)
@@ -161,7 +190,25 @@ void Board::print()
 void Board::printConflicts()
 // Prints conflict vectors
 {
+    for ( int i = 1; i <= BoardSize; i++)
+        for ( int j = 1; j <= BoardSize; j++)
+            cout << "Conflicts[" << i << "][" << j << "]: " << conflicts[i][j];
+}
 
+void Board::updateConflicts(int i, int j, int k, int s)
+{
+    int hStart = SquareSize * (j % SquareSize);
+    int vStart = SquareSize * (i % SquareSize);
+    for (int x = 1; x <= BoardSize; x++)
+    {
+        conflicts[x][j][k] = s;
+        conflicts[i][x][k] = s;
+    }
+    for (int y = 0; y < SquareSize; y++)
+    {
+        conflicts[vStart + y][j][k] = s;
+        conflicts[i][hStart + y][k] = s;
+    }
 }
 
 bool Board::isSolved()
@@ -172,6 +219,10 @@ bool Board::isSolved()
         {
             if (value[i][j] == Blank)
                 return false;
+//            for (int k = 1; k <= BoardSize; k++) {
+//              if (conflicts[i][j][k] == 0)
+//                  return false;
+
         }
     return true;
 }
