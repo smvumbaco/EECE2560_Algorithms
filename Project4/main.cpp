@@ -73,7 +73,7 @@ void Board::clear()
         for (int j = 1; j <= BoardSize; j++)
         {
             value[i][j] = Blank;
-            for (int k = 1; k <= BoardSize; k++)
+            for (int k = 0; k < BoardSize; k++)
                 conflicts[i][j][k] = NoConflict;
         }
 }
@@ -174,7 +174,7 @@ void Board::print()
             if (!isBlank(i, j))
                 cout << " " << getCell(i, j) << " ";
             else
-                cout << " ";
+                cout << "   ";
         }
         cout << "|";
         cout << endl;
@@ -201,13 +201,13 @@ void Board::updateConflicts(int i, int j, int k, int s)
     int vStart = SquareSize * (i % SquareSize);
     for (int x = 1; x <= BoardSize; x++)
     {
-        conflicts[x][j][k] = s;
-        conflicts[i][x][k] = s;
+        conflicts[x][j][k - 1] = s;
+        conflicts[i][x][k - 1] = s;
     }
     for (int y = 0; y < SquareSize; y++)
     {
-        conflicts[vStart + y][j][k] = s;
-        conflicts[i][hStart + y][k] = s;
+        conflicts[vStart + y][j][k - 1] = s;
+        conflicts[i][hStart + y][k - 1] = s;
     }
 }
 
