@@ -249,6 +249,10 @@ int main()
             b1.initialize(fin);
             b1.print();
             b1.printConflicts();
+            if (b1.isSolved())
+                cout << "Board is solved!" << endl;
+            else
+                cout << "Board is not solved!" << endl;
         }
     }
     catch (indexRangeError &ex)
