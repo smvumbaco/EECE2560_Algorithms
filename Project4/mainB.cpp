@@ -3,11 +3,6 @@
 
 // Main program file for Project 4, ...
 
-// Part a:
-//The code you submit should read each Sudoku board from the file one-by-one, print the
-//board and conflicts vectors to the screen, and check to see if the board has been solved (all
-//boards will not be solved at this point).
-
 // Part b:
 //Complete your program that solves Sudoku puzzles. Your algorithm should be based on
 //recursion.
@@ -19,7 +14,7 @@
 
 #include <iostream>
 #include <limits.h>
-#include "Board.h"
+// #include "Board.h"
 #include "d_matrix.h"
 #include "d_except.h"
 #include <string>
@@ -39,6 +34,11 @@ int numSolutions = 0;
 const int NoConflict = 0;
 const int YesConflict = 1;
 
+const int numberOfBoards = 96;
+int recursiveCalls = 0;
+int totalRecursiveCalls = 0;
+int averageRecursions = totalRecursiveCalls / numberOfBoards;
+
 class Board
 {
     public:
@@ -53,6 +53,9 @@ class Board
         void printConflicts();
         bool isSolved();
         void updateConflicts(int, int, int, int);
+        vector<int> getConflicts(int, int);
+        ValueType getEmptyConflict(int, int);
+        Board solveBoard();
     private:
         // The following matrices go from 1 to BoardSize in each
         // dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
@@ -195,12 +198,32 @@ void Board::printConflicts()
             cout << "Conflicts[" << i << "][" << j << "]: " << conflicts[i][j];
 }
 
-void Board::updateConflicts(int i, int j, int k, int s)
+vector<int> Board::getConflicts(int i, int j)
+// Returns the conflict vector for the square i, j
+{
+    return conflicts[i][j];
+}
+
+ValueType Board::getEmptyConflict(int i, int j)
+// Returns first empty conflict vector for square i,j
+{
+    for ( int k = 1; k <= BoardSize; k++)
+    {
+        if (conflicts[i][j][k] == NoConflict)
+            return k; 
+    }
+    return Blank;
+}
+
+;knal =B yesYesconfl  Yepme 
+scConflictBoardType}
+
+void Board::updateConflicts(int i, int j, int kict)
 {
     int hStart = SquareSize * (j % SquareSize);
     int vStart = SquareSize * (i % SquareSize);
     for (int x = 1; x <= BoardSize; x++)
-    {
+    {        
         conflicts[x][j][k - 1] = s;
         conflicts[i][x][k - 1] = s;
     }
@@ -219,12 +242,39 @@ bool Board::isSolved()
         {
             if (value[i][j] == Blank)
                 return false;
-//            for (int k = 1; k <= BoardSize; k++) {
-//              if (conflicts[i][j][k] == 0)
-//                  return false;
-
         }
+    print();
+    cout << recursiveCalls << endl;
+    totalRecursiveCalls =+ recursiveCalls;
+    recursiveCalls = 0;
     return true;
+}
+
+Board Board::solveBoard() 
+// Actively solves the Sudoku board
+{
+    if (this->isSolved())
+        return *this;
+    else 
+    {
+        recursiveCalls++;
+        int i = 1, j = 1;
+        // Set i and j to that of the first NOT blank cell
+        while (!this->isBlank(i, j))
+        {
+            if (i < 9) 
+                i++;
+            else
+            {
+                i = 0;
+                j++;
+            }
+        }
+        // Set the value at that cell to the first possible value
+        int valueToPlace = this->getEmptyConflict(i, j);
+        this->setCell(i, j, valueToPlace);
+        this->updateConflicts(i, j, valueToPlace);
+    }
 }
 
 int main()
@@ -252,7 +302,10 @@ int main()
             if (b1.isSolved())
                 cout << "Board is solved!" << endl;
             else
-                cout << "Board is not solved!" << endl;
+            {
+                b1 = b1.solveBoard();
+                cout << averageRecursions << endl;    
+            }
         }
     }
     catch (indexRangeError &ex)
