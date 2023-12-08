@@ -21,6 +21,8 @@
 #include <list>
 #include <fstream>
 #include <stack>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -55,8 +57,9 @@ class Board
         bool isSolved();
         void updateConflicts(int, int, int, ValueType);
         vector<int> getConflicts(int, int);
-        ValueType getEmptyConflict(int, int, int);
+        ValueType getEmptyConflict(int, int, int, bool);
         bool moreEmpty(int, int, ValueType);
+        int getNumConflicts(int, int);
     private:
         // The following matrices go from 1 to BoardSize in each
         // dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
@@ -132,7 +135,12 @@ void Board::setCell(int i, int j, int newValue)
     // if (newValue == 10)
     //     newValue -= 9;
     if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
+    {
         value[i][j] = newValue;
+        if (conflicts[i][j][newValue-1] == 1)
+            cout << "Placed a value where there is a conflict!!!!!!!!" << endl;
+        updateConflicts(i, j, newValue, YesConflict);
+    }
     else
         throw rangeError("bad value in getCell");
     // Update conflicts vectors
@@ -148,6 +156,7 @@ void Board::clearCell(int i, int j)
     {
         val = value[i][j];
         value[i][j] = Blank;
+        updateConflicts(i, j, val, NoConflict);
     }
     else
         throw rangeError("bad value in getCell");
@@ -206,10 +215,10 @@ vector<int> Board::getConflicts(int i, int j)
     return conflicts[i][j];
 }
 
-ValueType Board::getEmptyConflict(int i, int j, int firstVal = 0)
+ValueType Board::getEmptyConflict(int i, int j, int firstVal = 1, bool backTracking = true)
 // Returns first empty conflict vector for square i,j
 {
-    for (int k = firstVal - 1; k < BoardSize; k++) // Iterate from firstVal to 8
+    for (int k = firstVal - 1; k < BoardSize; k++) // Iterate from firstVal to 8 
     {
         if (conflicts[i][j][k] == NoConflict)
             return k + 1; 
@@ -217,16 +226,19 @@ ValueType Board::getEmptyConflict(int i, int j, int firstVal = 0)
     return Blank;
 }
 
+// This isn't right.
 void Board::updateConflicts(int i, int j, int k, int s)
 {
     // cout << "Updating conflict list of " << "<" << i << ", " << j << ">" << endl;
-    int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
-    int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
+    // Update conflict vectors of rows and columns
     for (int x = 1; x <= BoardSize; x++)
     {
         conflicts[x][j][k - 1] = s;
         conflicts[i][x][k - 1] = s;
     }
+    // Update conflict vectors of square
+    int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
+    int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
     for (int y = 0; y < SquareSize; y++)
     {
         // conflicts[vStart + y][j][k - 1] = s;
@@ -267,10 +279,38 @@ bool Board::moreEmpty(int i, int j, ValueType val)
     return false;
 }
 
-void solveBoard(Board& b, int i = 1, int j = 1, int k = 1) 
+int Board::getNumConflicts(int i, int j)
+{
+    int total = 0;
+    for (int k = 0; k < BoardSize; k++)
+    {
+        total += conflicts[i][j][k];
+    }
+    return total;
+}
+
+string stackToString(stack<vector<int>> copyStack) {
+    stringstream result;
+
+    while (!copyStack.empty()) {
+        vector<int> item = copyStack.top();
+        copyStack.pop();
+
+        int firstValue = item[0];
+        int secondValue = item[1];
+
+        result << "(" << firstValue << ", " << secondValue << ") ";
+    }
+
+    return result.str();
+}
+
+void solveBoard(Board& b, int i = 1, int j = 1, int k = 1, bool backTracking = false) 
 // Actively solves the Sudoku board
 {
-    b.print();
+    // b.print();
+    // b.printConflicts();
+    // cout << "guesses stack: " << stackToString(guesses) << endl;
     if (!b.isSolved()) // If board is solved, do nothing and simply complete the recursive process
     {
         recursiveCalls++;
@@ -287,23 +327,27 @@ void solveBoard(Board& b, int i = 1, int j = 1, int k = 1)
         }
         // cout << "board isn't solved: i = " << i << ", j = " << j << endl;
         // Set the value at that cell to the first possible value
-        guesses.push({i, j});
+        if (!backTracking)
+            guesses.push({i, j});
+        int numConflicts = b.getNumConflicts(i, j);
         int valueToPlace = b.getEmptyConflict(i, j, k);
-        cout << "valueToPlace = " << valueToPlace << " at <" << i << ", " << j << ">" << endl;
-        if (valueToPlace == Blank) // There is no possible value to insert at <i, j>
+        // cout << "valueToPlace = " << valueToPlace << " at <" << i << ", " << j << ">" << endl;
+        if (valueToPlace == Blank || (backTracking && numConflicts == 8)) // There is no possible value to insert at <i, j> OR there is only 1 value and it has already been tried
         {
             // backTrack(b, i, j);
             // b.print();
-            cout << "Backtracking!" << endl;
+            // cout << "Backtracking!" << endl;
             // ValueType val = b.getCell(i,j);
+            // cout << "guesses before popping: " << stackToString(guesses) << endl;
             guesses.pop();
+            // cout << "guesses after popping: " << stackToString(guesses) << endl;
             b.clearCell(i, j);
             int i_prev = guesses.top()[0];
             int j_prev = guesses.top()[1];
             cout << "i_prev = " << i_prev << "    j_prev = " << j_prev << endl;
             int val = b.getCell(i_prev, j_prev);
             b.clearCell(i_prev, j_prev);
-            solveBoard(b, i_prev, j_prev, val);
+            solveBoard(b, i_prev, j_prev, val + 1, true);
             // if(!b.moreEmpty(i_prev, j_prev, val))
             // {
             //     b.clearCell(i_prev, j_prev);
@@ -323,21 +367,6 @@ void solveBoard(Board& b, int i = 1, int j = 1, int k = 1)
         }
     }
 }
-
-// void backTrack(Board b, int i, int j)
-// {
-//     ValueType val = b.getCell(i,j);
-//     guesses.pop();
-//     int i_prev = guesses.top()[0];
-//     int j_prev = guesses.top()[1];
-//     b.clearCell(i, j);
-//     if(!b.moreEmpty(i, j, val))
-//     {
-//         b.clearCell(i_prev, j_prev);
-//         solveBoard(b, i_prev, j_prev, val++);
-//     }
-//     solveBoard(b, i, j, val++);
-// }
 
 int main()
 {
