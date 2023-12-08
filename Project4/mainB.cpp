@@ -206,10 +206,10 @@ vector<int> Board::getConflicts(int i, int j)
     return conflicts[i][j];
 }
 
-ValueType Board::getEmptyConflict(int i, int j, ValueType firstVal = 0)
+ValueType Board::getEmptyConflict(int i, int j, int firstVal = 0)
 // Returns first empty conflict vector for square i,j
 {
-    for ( int k = firstVal; k <= BoardSize - 1; k++) // Iterate from 0 to 8
+    for (int k = firstVal - 1; k < BoardSize; k++) // Iterate from firstVal to 8
     {
         if (conflicts[i][j][k] == NoConflict)
             return k + 1; 
@@ -257,10 +257,11 @@ bool Board::isSolved()
 }
 
 bool Board::moreEmpty(int i, int j, ValueType val)
+// Returns whether there are more available values to fill in at <i, j>
 {
-    for (int k = val; k <= SquareSize; k++)
+    for (int k = val; k <= BoardSize; k++)
     {
-        if (conflicts[i][j][k] == NoConflict)
+        if (conflicts[i][j][k] == NoConflict && k < 9)
             return true;
     }
     return false;
@@ -269,8 +270,8 @@ bool Board::moreEmpty(int i, int j, ValueType val)
 void solveBoard(Board& b, int i = 1, int j = 1, int k = 1) 
 // Actively solves the Sudoku board
 {
-    // b.print();
-    if (!b.isSolved())
+    b.print();
+    if (!b.isSolved()) // If board is solved, do nothing and simply complete the recursive process
     {
         recursiveCalls++;
         // Set i and j to that of the first NOT blank cell
@@ -288,23 +289,28 @@ void solveBoard(Board& b, int i = 1, int j = 1, int k = 1)
         // Set the value at that cell to the first possible value
         guesses.push({i, j});
         int valueToPlace = b.getEmptyConflict(i, j, k);
-        // cout << "valueToPlace = " << valueToPlace << endl;
-        if (valueToPlace == Blank) // There is no possible value
+        cout << "valueToPlace = " << valueToPlace << " at <" << i << ", " << j << ">" << endl;
+        if (valueToPlace == Blank) // There is no possible value to insert at <i, j>
         {
             // backTrack(b, i, j);
-            // cout << "I am backtracking" << endl;
-            ValueType val = b.getCell(i,j);
+            // b.print();
+            cout << "Backtracking!" << endl;
+            // ValueType val = b.getCell(i,j);
             guesses.pop();
+            b.clearCell(i, j);
             int i_prev = guesses.top()[0];
             int j_prev = guesses.top()[1];
-            b.clearCell(i, j);
-            if(!b.moreEmpty(i, j, val))
-            {
-                b.clearCell(i_prev, j_prev);
-                solveBoard(b, i_prev, j_prev, ++val);
-            }
-            else
-                solveBoard(b, i, j, ++val);
+            cout << "i_prev = " << i_prev << "    j_prev = " << j_prev << endl;
+            int val = b.getCell(i_prev, j_prev);
+            b.clearCell(i_prev, j_prev);
+            solveBoard(b, i_prev, j_prev, val);
+            // if(!b.moreEmpty(i_prev, j_prev, val))
+            // {
+            //     b.clearCell(i_prev, j_prev);
+            //     solveBoard(b, i_prev, j_prev, val + 1); 
+            // }
+            // else
+            //     solveBoard(b, i_prev, j_prev, val + 1); 
         }
         else 
         {

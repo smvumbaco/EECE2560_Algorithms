@@ -189,8 +189,9 @@ void Board::printConflicts()
 
 void Board::updateConflicts(int i, int j, int k, int s)
 {
-    int hStart = SquareSize * (j % SquareSize);
-    int vStart = SquareSize * (i % SquareSize);
+    cout << "Updating conflict list of " << "<" << i << ", " << j << ">" << endl;
+    int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
+    int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
     for (int x = 1; x <= BoardSize; x++)
     {
         conflicts[x][j][k - 1] = s;
@@ -198,8 +199,12 @@ void Board::updateConflicts(int i, int j, int k, int s)
     }
     for (int y = 0; y < SquareSize; y++)
     {
-        conflicts[vStart + y][j][k - 1] = s;
-        conflicts[i][hStart + y][k - 1] = s;
+        // conflicts[vStart + y][j][k - 1] = s;
+        for (int z = 0; z < SquareSize; z++)
+        {
+            // cout << "(" << vStart + y << ", " << hStart + z << ")" << endl;
+            conflicts[vStart + y][hStart + z][k - 1] = s;
+        }
     }
 }
 
@@ -220,7 +225,7 @@ int main()
     ifstream fin;
 
     // Read the sample grid from the file.
-    string fileName = "sudoku.txt";
+    string fileName = "sudoku1.txt";
 
     fin.open(fileName.c_str());
     if (!fin)
