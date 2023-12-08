@@ -20,6 +20,7 @@
 #include <string>
 #include <list>
 #include <fstream>
+#include <stack>
 
 using namespace std;
 
@@ -37,7 +38,7 @@ const int YesConflict = 1;
 const int numberOfBoards = 96;
 int recursiveCalls = 0;
 int totalRecursiveCalls = 0;
-int averageRecursions = totalRecursiveCalls / numberOfBoards;
+stack<vector<int>> guesses;
 
 class Board
 {
@@ -52,10 +53,10 @@ class Board
         void clearCell(int, int);
         void printConflicts();
         bool isSolved();
-        void updateConflicts(int, int, int, int);
+        void updateConflicts(int, int, int, ValueType);
         vector<int> getConflicts(int, int);
-        ValueType getEmptyConflict(int, int);
-        Board solveBoard();
+        ValueType getEmptyConflict(int, int, int);
+        bool moreEmpty(int, int, ValueType);
     private:
         // The following matrices go from 1 to BoardSize in each
         // dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
@@ -128,6 +129,8 @@ void Board::setCell(int i, int j, int newValue)
 // Returns nothing - just updates cell value. Throws an exception
 // if bad values are passed.
 {
+    // if (newValue == 10)
+    //     newValue -= 9;
     if (i >= 1 && i <= BoardSize && j >= 1 && j <= BoardSize)
         value[i][j] = newValue;
     else
@@ -189,7 +192,6 @@ void Board::print()
     cout << endl;
 } // end print()
 
-
 void Board::printConflicts()
 // Prints conflict vectors
 {
@@ -204,85 +206,139 @@ vector<int> Board::getConflicts(int i, int j)
     return conflicts[i][j];
 }
 
-ValueType Board::getEmptyConflict(int i, int j)
+ValueType Board::getEmptyConflict(int i, int j, ValueType firstVal = 0)
 // Returns first empty conflict vector for square i,j
 {
-    for ( int k = 1; k <= BoardSize; k++)
+    for ( int k = firstVal; k <= BoardSize - 1; k++) // Iterate from 0 to 8
     {
         if (conflicts[i][j][k] == NoConflict)
-            return k; 
+            return k + 1; 
     }
     return Blank;
 }
 
-;knal =B yesYesconfl  Yepme 
-scConflictBoardType}
-
-void Board::updateConflicts(int i, int j, int kict)
+void Board::updateConflicts(int i, int j, int k, int s)
 {
-    int hStart = SquareSize * (j % SquareSize);
-    int vStart = SquareSize * (i % SquareSize);
+    // cout << "Updating conflict list of " << "<" << i << ", " << j << ">" << endl;
+    int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
+    int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
     for (int x = 1; x <= BoardSize; x++)
-    {        
+    {
         conflicts[x][j][k - 1] = s;
         conflicts[i][x][k - 1] = s;
     }
     for (int y = 0; y < SquareSize; y++)
     {
-        conflicts[vStart + y][j][k - 1] = s;
-        conflicts[i][hStart + y][k - 1] = s;
+        // conflicts[vStart + y][j][k - 1] = s;
+        for (int z = 0; z < SquareSize; z++)
+        {
+            // cout << "(" << vStart + y << ", " << hStart + z << ")" << endl;
+            conflicts[vStart + y][hStart + z][k - 1] = s;
+        }
     }
 }
 
 bool Board::isSolved()
 // Checks to see if the board has been solved
 {
-    for (int i = 0; i < BoardSize; i++)
-        for (int j = 0; j < BoardSize; j++)
+    for (int i = 1; i <= BoardSize; i++)
+        for (int j = 1; j <= BoardSize; j++)
         {
             if (value[i][j] == Blank)
                 return false;
         }
     print();
     cout << recursiveCalls << endl;
-    totalRecursiveCalls =+ recursiveCalls;
+    totalRecursiveCalls += recursiveCalls;
     recursiveCalls = 0;
+    while (!guesses.empty())
+        guesses.pop();
     return true;
 }
 
-Board Board::solveBoard() 
+bool Board::moreEmpty(int i, int j, ValueType val)
+{
+    for (int k = val; k <= SquareSize; k++)
+    {
+        if (conflicts[i][j][k] == NoConflict)
+            return true;
+    }
+    return false;
+}
+
+void solveBoard(Board& b, int i = 1, int j = 1, int k = 1) 
 // Actively solves the Sudoku board
 {
-    if (this->isSolved())
-        return *this;
-    else 
+    // b.print();
+    if (!b.isSolved())
     {
         recursiveCalls++;
-        int i = 1, j = 1;
         // Set i and j to that of the first NOT blank cell
-        while (!this->isBlank(i, j))
+        while (!b.isBlank(i, j))
         {
             if (i < 9) 
                 i++;
             else
             {
-                i = 0;
+                i = 1;
                 j++;
             }
         }
+        // cout << "board isn't solved: i = " << i << ", j = " << j << endl;
         // Set the value at that cell to the first possible value
-        int valueToPlace = this->getEmptyConflict(i, j);
-        this->setCell(i, j, valueToPlace);
-        this->updateConflicts(i, j, valueToPlace);
+        guesses.push({i, j});
+        int valueToPlace = b.getEmptyConflict(i, j, k);
+        // cout << "valueToPlace = " << valueToPlace << endl;
+        if (valueToPlace == Blank) // There is no possible value
+        {
+            // backTrack(b, i, j);
+            // cout << "I am backtracking" << endl;
+            ValueType val = b.getCell(i,j);
+            guesses.pop();
+            int i_prev = guesses.top()[0];
+            int j_prev = guesses.top()[1];
+            b.clearCell(i, j);
+            if(!b.moreEmpty(i, j, val))
+            {
+                b.clearCell(i_prev, j_prev);
+                solveBoard(b, i_prev, j_prev, ++val);
+            }
+            else
+                solveBoard(b, i, j, ++val);
+        }
+        else 
+        {
+            b.setCell(i, j, valueToPlace);
+            // cout << "I set the Cell - making recursive call " << recursiveCalls << endl;
+            if (i == 9)
+                solveBoard(b, 1, j + 1);
+            else
+                solveBoard(b, i + 1, j);
+        }
     }
 }
+
+// void backTrack(Board b, int i, int j)
+// {
+//     ValueType val = b.getCell(i,j);
+//     guesses.pop();
+//     int i_prev = guesses.top()[0];
+//     int j_prev = guesses.top()[1];
+//     b.clearCell(i, j);
+//     if(!b.moreEmpty(i, j, val))
+//     {
+//         b.clearCell(i_prev, j_prev);
+//         solveBoard(b, i_prev, j_prev, val++);
+//     }
+//     solveBoard(b, i, j, val++);
+// }
 
 int main()
 {
     ifstream fin;
 
     // Read the sample grid from the file.
-    string fileName = "sudoku.txt";
+    string fileName = "sudoku1.txt";
 
     fin.open(fileName.c_str());
     if (!fin)
@@ -290,7 +346,6 @@ int main()
         cerr << "Cannot open " << fileName << endl;
         exit(1);
     }
-
     try
     {
         Board b1(SquareSize);
@@ -298,15 +353,18 @@ int main()
         {
             b1.initialize(fin);
             b1.print();
-            b1.printConflicts();
+            //b1.printConflicts();
             if (b1.isSolved())
                 cout << "Board is solved!" << endl;
             else
             {
-                b1 = b1.solveBoard();
-                cout << averageRecursions << endl;    
+                cout << "I start to solve the board" << endl;
+                solveBoard(b1);
+                cout << "Number of recursive calls made: " << recursiveCalls << endl;
             }
         }
+        int averageRecursions = totalRecursiveCalls / numberOfBoards;
+        cout << "Average Recursive Calls: " << averageRecursions << endl;
     }
     catch (indexRangeError &ex)
     {
