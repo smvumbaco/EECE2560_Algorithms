@@ -30,6 +30,8 @@ const int MaxValue = 9;
 int numSolutions = 0;
 const int NoConflict = 0;
 const int YesConflict = 1;
+const int RemoveConflict = -1;
+const int TrueConflict = 10;
 
 class Board
 {
@@ -40,9 +42,10 @@ class Board
         void print();
         bool isBlank(int, int);
         ValueType getCell(int, int); 
-        void setCell(int, int, int);
+        void setCell(int, int, int, bool);
         void clearCell(int, int);
         void printConflicts();
+        void printOneConflict(int, int);
         bool isSolved();
         void updateConflicts(int, int, int, int);
     private:
@@ -80,7 +83,7 @@ void Board::initialize(std::ifstream &fin)
         {
             fin >> ch;
             if (ch!= '.')
-                setCell(i, j, ch-'0');
+                setCell(i, j, ch-'0', true);
         }
 }
 
@@ -113,7 +116,7 @@ ValueType Board:: getCell(int i, int j)
         throw rangeError("bad value in getCell");
 }
 
-void Board::setCell(int i, int j, int newValue)
+void Board::setCell(int i, int j, int newValue, bool init = false)
 // Returns nothing - just updates cell value. Throws an exception
 // if bad values are passed.
 {
@@ -122,7 +125,10 @@ void Board::setCell(int i, int j, int newValue)
     else
         throw rangeError("bad value in getCell");
     // Update conflicts vectors
-    updateConflicts(i, j, newValue, YesConflict);
+    if (init)
+        updateConflicts(i, j, newValue, TrueConflict);
+    else
+        updateConflicts(i, j, newValue, YesConflict);
 }
 
 void Board::clearCell(int i, int j)
@@ -138,7 +144,7 @@ void Board::clearCell(int i, int j)
     else
         throw rangeError("bad value in getCell");
     // Update conflicts vectors
-    updateConflicts(i, j, val, NoConflict);
+    updateConflicts(i, j, val, RemoveConflict);
 }
 
 bool Board::isBlank(int i, int j)
@@ -187,15 +193,62 @@ void Board::printConflicts()
             cout << "Conflicts[" << i << "][" << j << "]: " << conflicts[i][j];
 }
 
+void Board::printOneConflict(int i, int j)
+// Prints conflict vectors
+{
+    cout << "Conflicts[" << i << "][" << j << "]: " << conflicts[i][j] << endl;
+}
+
+//void Board::updateConflicts(int i, int j, int k, int s)
+//{
+//    cout << "Updating conflict list of " << "<" << i << ", " << j << ">" << endl;
+//    int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
+//    int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
+//    for (int x = 1; x <= BoardSize; x++)
+//    {
+//        conflicts[x][j][k - 1] = s;
+//        conflicts[i][x][k - 1] = s;
+//    }
+//    for (int y = 0; y < SquareSize; y++)
+//    {
+//        // conflicts[vStart + y][j][k - 1] = s;
+//        for (int z = 0; z < SquareSize; z++)
+//        {
+//            // cout << "(" << vStart + y << ", " << hStart + z << ")" << endl;
+//            conflicts[vStart + y][hStart + z][k - 1] = s;
+//        }
+//    }
+//}
+
 void Board::updateConflicts(int i, int j, int k, int s)
 {
     cout << "Updating conflict list of " << "<" << i << ", " << j << ">" << endl;
+    // identify coordinates of square: i.e. center square is (hStart, vStart) = (4, 4), (hEnd, vEnd) = (6, 6)
     int hStart = SquareSize * ((j - 1) / SquareSize) + 1;
+    int hEnd = hStart + 2;
     int vStart = SquareSize * ((i - 1) / SquareSize) + 1;
+    int vEnd = vStart + 2;
+    cout << "Start: (" << vStart << ", " << hStart << ")   End: (" << vEnd << ", " << hEnd << ")   " << endl;
     for (int x = 1; x <= BoardSize; x++)
     {
-        conflicts[x][j][k - 1] = s;
-        conflicts[i][x][k - 1] = s;
+        if (x < vStart || x > vEnd) {
+            if (x<vStart)
+                cout << "vStart: " << x << " < " << vStart << "     ";
+            if (x > vEnd)
+                cout << "hend: " << x << " > " << vEnd << "     ";
+            cout << "updating [" << x << "][" << j << "]" << endl;
+            if (conflicts[x][j][k - 1] != TrueConflict)
+                conflicts[x][j][k - 1] += s;
+        }
+        if (x < hStart || x > hEnd) {
+            if (x<hStart)
+                cout << "vstart: " << x << " < " << hStart << "     ";
+            if (x > hEnd)
+                cout << "vend: " << x << " > " << hEnd << "     ";
+            cout  << "updating [" << i << "][" << x << "]" << endl;
+            if (conflicts[x][j][k - 1] != TrueConflict)
+                conflicts[i][x][k - 1] += s;
+        }
     }
     for (int y = 0; y < SquareSize; y++)
     {
@@ -203,7 +256,8 @@ void Board::updateConflicts(int i, int j, int k, int s)
         for (int z = 0; z < SquareSize; z++)
         {
             // cout << "(" << vStart + y << ", " << hStart + z << ")" << endl;
-            conflicts[vStart + y][hStart + z][k - 1] = s;
+            if (conflicts[vStart + y][hStart + z][k - 1] != TrueConflict)
+                conflicts[vStart + y][hStart + z][k - 1] += s;
         }
     }
 }
@@ -242,6 +296,12 @@ int main()
             b1.initialize(fin);
             b1.print();
             b1.printConflicts();
+//            b1.setCell(2,1,5);
+//            b1.printOneConflict(2,1);
+//            b1.printOneConflict(1,3);
+//            b1.clearCell(2,1);
+//            b1.printOneConflict(2,1);
+//            b1.printOneConflict(1,3);
             if (b1.isSolved())
                 cout << "Board is solved!" << endl;
             else
